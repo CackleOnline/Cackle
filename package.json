@@ -5,7 +5,10 @@
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
-    "start": "tsc && node dist"
+    "dev": "tsc && node dist",
+    "dbsetup": "node dbSetup",
+    "build": "tsc",
+    "start": "node dist"
   },
   "keywords": [],
   "author": "",
