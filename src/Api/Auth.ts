@@ -7,7 +7,7 @@ var Auth = app.Router()
 function tokenGen(size) {
     var generatedOutput = '';
     var storedCharacters =
-        '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-';
     var totalCharacterSize = storedCharacters.length;
     for (var index = 0; index < size; index++) {
         generatedOutput += storedCharacters.charAt(Math.floor(Math.random() *
@@ -32,7 +32,7 @@ Auth.post('/auth', function (req: any, res: any) {
                         if (err) throw err;
                         var results = JSON.stringify(result, null, 2)
                         if(compareSync(req.body.password, result[0].password)){
-                            var token = tokenGen(25)
+                            var token = tokenGen(75)
                             r.table('logins').insert({ token: token, account: result[0].username, expire: Date.now() + (1000 * 3600) }).run(conn)
                             res.send({token:token})
                         }else {
