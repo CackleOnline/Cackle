@@ -11,7 +11,11 @@ Posts.get('/posts', function (req: any, res: any) {
             return;
         }
         r.table('posts').run(conn, (data, data2) => {
-            res.send(data2['_responses'][0].r)
+            data2.toArray(function (err, result) {
+                if (err) throw err;
+                var results = JSON.stringify(result, null, 2)
+                res.send(result)
+            });
         })
     });
 })
