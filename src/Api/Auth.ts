@@ -30,7 +30,7 @@ Auth.post('/auth', function (req: any, res: any) {
                     if (err) throw err;
                     cursor.toArray(function (err, result) {
                         if (err) throw err;
-                        var results = JSON.stringify(result, null, 2)
+                        console.log(result[0].password)
                         if (compareSync(req.body.password, result[0].password)) {
                             var token = tokenGen(75)
                             r.table('logins').insert({ token: token, account: result[0].username, expire: Date.now() + (1000 * 3600) }).run(conn)
