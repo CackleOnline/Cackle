@@ -34,7 +34,7 @@ Auth.post('/auth', function (req: any, res: any) {
                         if(compareSync(req.body.password, result[0].password)){
                             var token = tokenGen(25)
                             r.table('logins').insert({ token: token, account: result[0].username, expire: Date.now() + (1000 * 3600) }).run(conn)
-                            res.send({token:tokenGen(25)})
+                            res.send({token:token})
                         }else {
                             res.send({message:"error"})
                         }
