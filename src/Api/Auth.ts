@@ -1,7 +1,7 @@
 import rethinkDbConnectionObject from "../db"
 import r from 'rethinkdb'
 import app from 'express'
-import {compareSync} from 'bcrypt'
+import { compareSync } from 'bcrypt'
 var Auth = app.Router()
 
 function tokenGen(size) {
@@ -31,12 +31,12 @@ Auth.post('/auth', function (req: any, res: any) {
                     cursor.toArray(function (err, result) {
                         if (err) throw err;
                         var results = JSON.stringify(result, null, 2)
-                        if(compareSync(req.body.password, result[0].password)){
+                        if (compareSync(req.body.password, result[0].password)) {
                             var token = tokenGen(75)
                             r.table('logins').insert({ token: token, account: result[0].username, expire: Date.now() + (1000 * 3600) }).run(conn)
-                            res.send({token:token})
-                        }else {
-                            res.send({message:"error"})
+                            res.send({ token: token })
+                        } else {
+                            res.send({ message: "error" })
                         }
                     });
                 });

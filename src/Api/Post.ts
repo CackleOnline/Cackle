@@ -12,24 +12,24 @@ Post.post('/post', function (req: any, res: any) {
             res.send('an error occured')
             return;
         }
-        try{
+        try {
             conn.use('cackle')
-            
+
             r.table('logins').filter(r.row('token').eq(req.body.token)).
                 run(conn, function (err, cursor) {
                     if (err) throw err;
                     cursor.toArray(function (err, result) {
                         if (err) throw err;
-                        
-                        if(result[0].expire > Date.now()){
-                        r.table('posts').insert({ title: req.body.title, content: req.body.content, author: result[0].account, timestamp: Date.now() }).run(conn)
-                        res.send({message:"successful"})
-                        }else{
-                            res.send({message:"sorry, your session has expired."})
+
+                        if (result[0].expire > Date.now()) {
+                            r.table('posts').insert({ title: req.body.title, content: req.body.content, author: result[0].account, timestamp: Date.now() }).run(conn)
+                            res.send({ message: "successful" })
+                        } else {
+                            res.send({ message: "sorry, your session has expired." })
                         }
                     });
                 });
-        }catch(e) {
+        } catch (e) {
             res.send('error')
         }
     });
