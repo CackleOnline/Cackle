@@ -4,6 +4,7 @@ import app from 'express'
 var Posts = app.Router()
 
 Posts.get('/posts', function (req: any, res: any) {
+    try{
     r.connect(rethinkDbConnectionObject, (err, conn) => {
         conn.use('cackle')
         if (err) {
@@ -18,9 +19,14 @@ Posts.get('/posts', function (req: any, res: any) {
             });
         })
     });
+}catch(e){
+    console.log(e)
+    res.send({message:"an error occured"})
+}
 })
 
 Posts.get('/posts/:user', function (req: any, res: any) {
+    try{
     r.connect(rethinkDbConnectionObject, (err, conn) => {
         conn.use('cackle')
         if (err) {
@@ -38,6 +44,10 @@ Posts.get('/posts/:user', function (req: any, res: any) {
                 });
             });
     });
+}catch(e){
+    console.log(e)
+    res.send({message:"an error occured"})
+}
 })
 
 export default Posts

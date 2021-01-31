@@ -27,6 +27,7 @@ Auth.post('/auth', function (req: any, res: any) {
             conn.use('cackle')
             r.table('users').filter(r.row('username').eq(req.body.username)).
                 run(conn, function (err, cursor) {
+                    try{
                     if (err) throw err;
                     cursor.toArray(function (err, result) {
                         if (err) throw err;
@@ -39,6 +40,10 @@ Auth.post('/auth', function (req: any, res: any) {
                             res.send({ message: "error" })
                         }
                     });
+                }catch(e){
+                    console.log(e)
+                    res.send("error")
+                }
                 });
         } catch (e) {
             res.send('error')
