@@ -24,7 +24,7 @@
   },
   "include": [
       "src/**/*"
-, "src/Views"  ],
+, "src/Views"],
   "exclude": [
       "node_modules",
       "dist/**/*"
