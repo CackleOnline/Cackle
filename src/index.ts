@@ -5,7 +5,8 @@ import Post from './Api/Post'
 import bodyparser from 'body-parser'
 import Auth from './Api/Auth'
 import Register from './Api/Register'
-import Scripts from './Routes/Scripts'
+import Assets from './Routes/Assets'
+import TokenInfo from './Api/TokenInfo'
 
 //express stuff
 var App = app()
@@ -22,6 +23,7 @@ App.use('/api', Posts)
 App.use('/api', Post)
 App.use('/cauth', Auth)
 App.use('/cauth', Register)
-App.use('/js', Scripts)
+App.use('/cauth', TokenInfo)
+App.use('/assets', Assets)
 
 App.listen(7777)
