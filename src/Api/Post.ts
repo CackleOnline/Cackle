@@ -15,7 +15,7 @@ Post.post('/post', function (req: any, res: any) {
         try {
             conn.use('cackle')
 
-            r.table('logins').filter(r.row('token').eq(req.body.token)).
+            r.table('logins').filter(r.row('token').eq(req.header('Authentication'))).
                 run(conn, function (err, cursor) {
                     if (err) throw err;
                     cursor.toArray(function (err, result) {

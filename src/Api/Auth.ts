@@ -33,7 +33,7 @@ Auth.post('/auth', function (req: any, res: any) {
                         if (err) throw err;
                         if (compareSync(req.body.password, result[0].password)) {
                             var token = tokenGen(75)
-                            r.table('logins').insert({ token: token, account: result[0].username, expire: Date.now() + (1000 * 3600) }).run(conn)
+                            r.table('logins').insert({ token: token, account: result[0].username, expire: Date.now() + (1000 * 604800) }).run(conn)
                             res.send({ token: token })
                         } else {
                             res.send({ message: "error" })
@@ -41,11 +41,11 @@ Auth.post('/auth', function (req: any, res: any) {
                     });
                 }catch(e){
                     console.log(e)
-                    res.send("error")
+                    res.send({message:"error"})
                 }
                 });
         } catch (e) {
-            res.send('error')
+            res.send({message:"error"})
         }
     });
 })
