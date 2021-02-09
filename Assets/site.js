@@ -1,5 +1,6 @@
-var contents = ""
+let contents = ""
 
+function load(){
 fetch('/api/posts').then(res => res.json()).then(res => {
     for (let i = 0; i < res.length; i++) {
         const post = res[i];
@@ -7,6 +8,7 @@ fetch('/api/posts').then(res => res.json()).then(res => {
     }
     document.getElementById("posts").innerHTML = contents
 })
+}
 
 function setCookie(cname, cvalue, exdays) {
     var d = new Date();
@@ -23,7 +25,7 @@ function login() {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
-    }).then(res => res.json().then(res => { setCookie('token', res.token, 7) }))
+    }).then(res => res.json()).then(res => { setCookie('token', res.token, 7) })
 }
 
 function getCookie(cname) {
@@ -46,9 +48,24 @@ function getUserInfo() {
     fetch('/cauth/token', {
         method: 'GET',
         headers: {
-            'Authentication': 'application/json'
+            'Authentication': getCookie('token')
         }
-    }).then(res => res.json().then(res => { setCookie('token', res.token, 7) }))
+    }).then(res => res.json()).then(res => { document.getElementById('userdiv').innerHTML = `<h2>Logged in as ${res.account}</h2>`})
 }
+
+function postMessage() {
+    var data = { title: document.getElementById('title').value, content: document.getElementById('message').value }
+    fetch('/api/post', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authentication': getCookie('token')
+        },
+        body: JSON.stringify(data)
+    }).then(res => res.json()).then(res => { contents = "";console.log(res); load();})
+}
+load()
+
+document.getElementById('submitPost').onclick = function () { postMessage() }
 
 document.getElementById('submitLogin').onclick = function () { login() }

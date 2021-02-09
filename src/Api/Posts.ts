@@ -39,6 +39,9 @@ Posts.get('/posts/:user', function (req: any, res: any) {
                 if (err) throw err;
                 cursor.toArray(function (err, result) {
                     if (err) throw err;
+                    result.sort(function (a, b) {
+                        return a.timestamp - b.timestamp;
+                      });
                     var results = JSON.stringify(result, null, 2)
                     res.send(result)
                 });

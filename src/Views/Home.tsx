@@ -7,12 +7,22 @@ function Home(props: any) {
       <title>CackleOnline</title>
     </head>
     <body className="parent">
-      <div className="div1"> <div id="posts"></div> </div>
+      <div className="div1">
+        <div className="post">
+          <div className="posthead">
+            <input placeholder="Title" type="text" id="title" />
+          </div>
+          <textarea placeholder="Message" id="message" />
+          <button id="submitPost">Post</button>
+        </div>
+        <div id="posts"></div> 
+      </div>
       <div className="div2"> </div>
       <div className="div3"> </div>
       <div className="div4"> </div>
-      <div className="div5"> </div>
+      <div className="div5" id="userdiv"> </div>
       <script src="./assets/site.js"></script>
+      <script>getUserInfo()</script>
     </body>
   </html>;
 }
