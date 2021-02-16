@@ -9,6 +9,7 @@ Posts.get('/posts', function (req: any, res: any) {
         conn.use('cackle')
         if (err) {
             console.error('Error:', err);
+            res.send([])
             return;
         }
         r.table('posts').run(conn, (data, data2) => {
@@ -30,7 +31,8 @@ Posts.get('/posts/:user', function (req: any, res: any) {
     r.connect(rethinkDbConnectionObject, (err, conn) => {
         conn.use('cackle')
         if (err) {
-            console.error('Error:', err);
+            console.error('Error:', err)
+            res.send([])
             return;
         }
 

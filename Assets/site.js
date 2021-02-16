@@ -62,9 +62,12 @@ function postMessage() {
             'Authentication': getCookie('token')
         },
         body: JSON.stringify(data)
-    }).then(res => res.json()).then(res => { contents = "";console.log(res); load();})
+    }).then(res => res.json()).then(res => { contents = ""; console.log(res); load() })
 }
+
 load()
+
+console.log(getCookie('token'))
 
 document.getElementById('submitPost').onclick = function () { postMessage() }
 
