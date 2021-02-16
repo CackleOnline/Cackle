@@ -19,13 +19,14 @@ function setCookie(cname, cvalue, exdays) {
 
 function login() {
     var data = { username: document.getElementById('username').value, password: document.getElementById('password').value }
+    console.log(data)
     fetch('/cauth/auth', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
-    }).then(res => res.json()).then(res => { setCookie('token', res.token, 7) })
+    }).then(res => res.json()).then(res => { setCookie('token', res.token, 7); window.location = '/' })
 }
 
 function getCookie(cname) {
