@@ -9,6 +9,7 @@ import Register from './Api/Register'
 import Assets from './Routes/Assets'
 import TokenInfo from './Api/TokenInfo'
 import Login from './Routes/Login'
+import SW from './Routes/ServiceWorker'
 
 //express stuff
 var App = app()
@@ -20,6 +21,7 @@ App.use(cookieParser())
 
 //main website
 App.use('/', Home)
+App.use('/', SW)
 App.use('/', Login)
 
 //api routes
