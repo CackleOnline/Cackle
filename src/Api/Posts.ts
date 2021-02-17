@@ -45,6 +45,7 @@ Posts.get('/posts/:user', function (req: any, res: any) {
                         return a.timestamp - b.timestamp;
                       });
                     var results = JSON.stringify(result, null, 2)
+                    res.set('Cache-Control', 'no-store')
                     res.send(result)
                 });
             });
