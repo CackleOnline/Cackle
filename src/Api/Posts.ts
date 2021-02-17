@@ -12,10 +12,10 @@ Posts.get('/posts', function (req: any, res: any) {
             res.send([])
             return;
         }
-        r.table('posts').run(conn, (data, data2) => {
+        r.table('posts').orderBy({index:'id'}).run(conn, (data, data2) => {
             data2.toArray(function (err, result) {
                 if (err) throw err;
-                var results = JSON.stringify(result, null, 2)
+                var results = JSON.stringify(result.reverse(), null, 2)
                 res.send(result)
             });
         })
@@ -36,7 +36,7 @@ Posts.get('/posts/:user', function (req: any, res: any) {
             return;
         }
 
-        r.table('posts').filter(r.row('author').eq(req.params.user)).
+        r.table('posts').orderBy({index:'id'}).
             run(conn, function (err, cursor) {
                 if (err) throw err;
                 cursor.toArray(function (err, result) {

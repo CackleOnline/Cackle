@@ -3,8 +3,6 @@ import r from 'rethinkdb'
 import app from 'express'
 var Post = app.Router()
 
-
-
 Post.post('/post', function (req: any, res: any) {
     r.connect(rethinkDbConnectionObject, (err, conn) => {
         if (err) {
@@ -17,28 +15,39 @@ Post.post('/post', function (req: any, res: any) {
 
             r.table('logins').filter(r.row('token').eq(req.header('Authentication'))).
                 run(conn, function (err, cursor) {
-                    console.log(req.header('Authentication'))
-                    try{
-                    if (err) throw err;
-                    cursor.toArray(function (err, result) {
+                    try {
                         if (err) throw err;
-                        console.log(result[0])
-
-                        if (result[0].expire > Date.now()) {
-                            r.table('posts').insert({ title: req.body.title, content: req.body.content, author: result[0].account, timestamp: Date.now() }).run(conn)
-                            res.send({ message: "successful" })
-                        } else {
-                            res.send({ message: "sorry, your session has expired." })
-                        }
-                    });
-                    }catch(e){
+                        cursor.toArray(function (err, result) {
+                            if (err) throw err;
+                            console.log(result[0])
+                            r.table('posts').
+                                run(conn, function (err, cursor) {
+                                    try {
+                                        if (err) throw err;
+                                        cursor.toArray(function (err, result1) {
+                                            if (err) throw err;
+                                            console.log(result1.length)
+                                            if (result[0].expire > Date.now()) {
+                                                r.table('posts').insert({ id: result1.length + 1, title: req.body.title, content: req.body.content, author: result[0].account, timestamp: Date.now() }).run(conn)
+                                                res.send({ message: "successful" })
+                                            } else {
+                                                res.send({ message: "sorry, your session has expired." })
+                                            }
+                                        });
+                                    } catch (e) {
+                                        console.log(e)
+                                        res.send({ message: 'an error occured' })
+                                    }
+                                });
+                        });
+                    } catch (e) {
                         console.log(e)
-                        res.send({message: 'an error occured'})
+                        res.send({ message: 'an error occured' })
                     }
                 });
         } catch (e) {
             console.log(e)
-            res.send({message: 'an error occured'})
+            res.send({ message: 'an error occured' })
         }
     });
 })
