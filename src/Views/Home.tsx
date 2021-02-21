@@ -24,7 +24,6 @@ function Home(props: any) {
       <div className="div3"> </div>
       <div className="div4"> </div>
       <div className="div5" id="userdiv"> </div>
-      <script src="https://storage.googleapis.com/workbox-cdn/releases/3.0.1/workbox-sw.js"></script>
       <script src="./assets/site.js"></script>
       <script>getUserInfo()</script>
     </body>

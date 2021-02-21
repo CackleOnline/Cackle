@@ -40,8 +40,6 @@ Auth.post('/auth', function (req: any, res: any) {
                                     res.send({ message: "error" })
                                 }
                             } catch (e) {
-                                console.log(e)
-                                console.log(result[0])
                                 res.send({ message: "error" })
                             }
                         });

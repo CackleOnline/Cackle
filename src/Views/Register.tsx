@@ -1,7 +1,6 @@
 import * as React from 'react'
-import Login from '../Routes/Login';
 
-function Home(props: any) {
+function Register(props: any) {
   return <html>
     <head>
       <link rel="stylesheet" href="/assets/styles.css" />
@@ -13,15 +12,16 @@ function Home(props: any) {
     <body >
       <div className="post">
         <div className="posthead">
-          Login
+          Register
         </div>
         <input placeholder="Username" type="text" id="username" /> 
-        <input placeholder="Password" type="text" id="password" />
-        <button id="submitLogin">Login</button>
+        <input placeholder="Email" type="email" id="email" />
+        <input placeholder="Password" type="password" id="password" />
+        <button id="submitRegister">Register</button>
       </div>
       <script src="./assets/site.js"></script>
     </body>
   </html>;
 }
 
-export default Home;
+export default Register;

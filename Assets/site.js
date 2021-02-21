@@ -11,7 +11,7 @@ function load(){
 fetch('/api/posts').then(res => res.json()).then(res => {
     for (let i = 0; i < res.length; i++) {
         const post = res[i];
-        contents += `<div class="post"><div class="posthead"> ${post.title} </div><p> ${post.content} </p> </div>`
+        contents += `<div class="post"><div class="posthead"> ${post.title}  •  ${post.author} </div><p> ${post.content} </p> </div>`
     }
     document.getElementById("posts").innerHTML = contents
 })
@@ -26,7 +26,6 @@ function setCookie(cname, cvalue, exdays) {
 
 function login() {
     var data = { username: document.getElementById('username').value, password: document.getElementById('password').value }
-    console.log(data)
     fetch('/cauth/auth', {
         method: 'POST',
         headers: {
@@ -34,6 +33,17 @@ function login() {
         },
         body: JSON.stringify(data)
     }).then(res => res.json()).then(res => { setCookie('token', res.token, 7); window.location = '/' })
+}
+
+function register() {
+    var data = { username: document.getElementById('username').value, email: document.getElementById('email').value, password: document.getElementById('password').value }
+    fetch('/cauth/register', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    }).then(res => res.json()).then(res => { console.log(res)})
 }
 
 function getCookie(cname) {
@@ -75,8 +85,8 @@ function postMessage() {
 
 load()
 
-console.log(getCookie('token'))
+document.getElementById('submitPost').onclick = postMessage
 
-document.getElementById('submitPost').onclick = function () { postMessage() }
+document.getElementById('submitLogin').onclick = login
 
-document.getElementById('submitLogin').onclick = function () { login() }
+document.getElementById('submitRegister').onclick = register

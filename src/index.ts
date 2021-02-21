@@ -9,6 +9,7 @@ import Register from './Api/Register'
 import Assets from './Routes/Assets'
 import TokenInfo from './Api/TokenInfo'
 import Login from './Routes/Login'
+import Register1 from './Routes/Register'
 import SW from './Routes/ServiceWorker'
 
 //express stuff
@@ -23,6 +24,8 @@ App.use(cookieParser())
 App.use('/', Home)
 App.use('/', SW)
 App.use('/', Login)
+App.use('/', Register1)
+
 
 //api routes
 App.use('/api', Posts)

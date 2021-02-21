@@ -13,8 +13,13 @@ TokenInfo.get('/token', function (req: any, res: any) {
         }
         r.table('logins').filter({token: req.header('Authentication')}).run(conn, (data, data2) => {
             data2.toArray(function (err, result) {
-                if (err) throw err;
-                res.send({expire:result[0].expire, account:result[0].account})
+                try{
+                    if (err) throw err;
+                    res.send({expire:result[0].expire, account:result[0].account})
+                }catch(e){
+                    console.log(e)
+                    res.send({message:"an error occured"})
+                }
             });
         })
     });
