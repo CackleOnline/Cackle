@@ -35,7 +35,7 @@ r.connect(rethinkDbConnectionObject, (err, conn) => {
         console.log('Table `users` was created successfully.');
     })
 
-    r.table('users').insert({ username: "test", password: "$2b$12$ZlYBlPfgyqTxiUtJcb0SFu9TQ5x9jlONocsuLDrogWoomSr7Az7.q" }).run(conn, function (err, result) {
+    r.table('users').insert({ username: "test", email:"test@example.com", password: "$2b$12$ZlYBlPfgyqTxiUtJcb0SFu9TQ5x9jlONocsuLDrogWoomSr7Az7.q" }).run(conn, function (err, result) {
         if (err) throw err;
         console.log('Test user with password `test123` and username of `test` created successfully');
     });

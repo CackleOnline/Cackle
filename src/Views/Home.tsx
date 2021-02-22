@@ -22,7 +22,6 @@ function Home(props: any) {
       </div>
       <div className="div2"> </div>
       <div className="div3"> </div>
-      <div className="div4"> </div>
       <div className="div5" id="userdiv"> </div>
       <script src="./assets/site.js"></script>
       <script>getUserInfo()</script>
