@@ -1,10 +1,89 @@
 if ('serviceWorker' in navigator) {
-    // Use the window load event to keep the page load performant
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('/sw.js');
     });
 }
 
+function timetampToTime(timestamp){
+    var yeet1 = new Date()
+    var yeet2 = new Date(timestamp)
+    let isPM = 0
+    if(yeet1.getDate() === yeet2.getDate() && yeet1.getMonth() === yeet2.getMonth() && yeet1.getFullYear() === yeet2.getFullYear()){
+        if(yeet2.getHours() > 12){
+            isPM = 1
+            if(yeet2.getMinutes() < 10){
+                return "Today at " + (yeet2.getHours() - 12) + ":0" + yeet2.getMinutes() + " PM"
+            }else{
+                return "Today at " + (yeet2.getHours() - 12) + ":" + yeet2.getMinutes() + " PM"
+            }
+        }else {
+            if(yeet2.getHours() === 12){
+                if(yeet2.getMinutes() < 10){
+                return "Today at " + yeet2.getHours() + ":0" + yeet2.getMinutes() + " PM"
+            }else{
+                return "Today at " + yeet2.getHours() + ":" + yeet2.getMinutes() + " PM"
+            }
+            }else{
+            isPM = 0
+            if(yeet2.getMinutes() < 10){
+                return "Today at " + yeet2.getHours() + ":0" + yeet2.getMinutes() + " AM"
+            }else{
+                return "Today at " + yeet2.getHours() + ":" + yeet2.getMinutes() + " AM"
+            }}
+        }
+    }else if((yeet1.getDate() - 1) === yeet2.getDate() && yeet1.getMonth() === yeet2.getMonth() && yeet1.getFullYear() === yeet2.getFullYear()){
+        if(yeet2.getHours() > 12){
+            isPM = 1
+            if(yeet2.getMinutes() < 10){
+                return "Yesterday at " + (yeet2.getHours() - 12) + ":0" + yeet2.getMinutes() + " PM"
+            }else{
+                return "Yesterday at " + (yeet2.getHours() - 12) + ":" + yeet2.getMinutes() + " PM"
+            }
+            }else{
+                if(yeet2.getHours() === 12){
+                if(yeet2.getMinutes() < 10){
+                return "Today at " + yeet2.getHours() + ":0" + yeet2.getMinutes() + " PM"
+            }else{
+                return "Today at " + yeet2.getHours() + ":" + yeet2.getMinutes() + " PM"
+            }
+            }else{
+            isPM = 0
+            if(yeet2.getMinutes() < 10){
+                return "Today at " + yeet2.getHours() + ":0" + yeet2.getMinutes() + " AM"
+            }else{
+                return "Today at " + yeet2.getHours() + ":" + yeet2.getMinutes() + " AM"
+            }}
+        }
+    }else if((yeet1.getDate() + 1) === yeet2.getDate() && yeet1.getMonth() === yeet2.getMonth() && yeet1.getFullYear() === yeet2.getFullYear()){
+        if(yeet2.getHours() > 12){
+            isPM = 1
+            if(yeet2.getMinutes() < 10){
+                return "Tomorrow at " + (yeet2.getHours() - 12) + ":0" + yeet2.getMinutes() + " PM"
+            }else{
+                return "Tomorrow at " + (yeet2.getHours() - 12) + ":" + yeet2.getMinutes() + " PM"
+            }
+            }else{
+                if(yeet2.getHours() === 12){
+                if(yeet2.getMinutes() < 10){
+                return "Today at " + yeet2.getHours() + ":0" + yeet2.getMinutes() + " PM"
+            }else{
+                return "Today at " + yeet2.getHours() + ":" + yeet2.getMinutes() + " PM"
+            }
+            }else{
+            isPM = 0
+            if(yeet2.getMinutes() < 10){
+                return "Today at " + yeet2.getHours() + ":0" + yeet2.getMinutes() + " AM"
+            }else{
+                return "Today at " + yeet2.getHours() + ":" + yeet2.getMinutes() + " AM"
+            }}
+        }}
+    else{
+        return (yeet2.getMonth() + 1) + "/" + yeet2.getDate() + "/" + yeet2.getFullYear()
+    }
+}
+
+
+//this fetch request is for caching purposes
 fetch('/assets/danger.svg')
 
 let contents = ""
@@ -14,7 +93,7 @@ function load(){
         fetch('/api/posts').then(res => res.json()).then(res => {
             for (let i = 0; i < res.length; i++) {
                 const post = res[i];
-                contents += `<div class="post"><div class="posthead"> ${post.title}  •  ${post.author} </div><p> ${post.content} </p> </div>`
+                contents += `<div class="post"><div class="posthead"> ${post.title}  •  ${post.author} •  ${timetampToTime(post.timestamp)} </div><p> ${post.content} </p> </div>`
             }
             document.getElementById("posts").innerHTML = contents
         })
