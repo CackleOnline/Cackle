@@ -5,16 +5,22 @@ if ('serviceWorker' in navigator) {
     });
 }
 
+fetch('/assets/danger.svg')
+
 let contents = ""
 
 function load(){
-fetch('/api/posts').then(res => res.json()).then(res => {
-    for (let i = 0; i < res.length; i++) {
-        const post = res[i];
-        contents += `<div class="post"><div class="posthead"> ${post.title}  •  ${post.author} </div><p> ${post.content} </p> </div>`
+    if(navigator.onLine){
+        fetch('/api/posts').then(res => res.json()).then(res => {
+            for (let i = 0; i < res.length; i++) {
+                const post = res[i];
+                contents += `<div class="post"><div class="posthead"> ${post.title}  •  ${post.author} </div><p> ${post.content} </p> </div>`
+            }
+            document.getElementById("posts").innerHTML = contents
+        })
+    }else{
+        document.getElementById("posts").innerHTML = `<div class="post error"> <img src="/assets/danger.svg" alt="alert"/> <br/> It appears that you are offline, try again later of refresh the page </div>`
     }
-    document.getElementById("posts").innerHTML = contents
-})
 }
 
 function setCookie(cname, cvalue, exdays) {

@@ -3,7 +3,8 @@ var CACHE_NAME = 'cackle-cache';
 var urlsToCache = [
     './',
     './assets/styles.css',
-    './assets/site.js'
+    './assets/site.js',
+    './assets/danger.svg'
 ];
 
 self.addEventListener('install', function (event) {
@@ -25,11 +26,11 @@ self.addEventListener('fetch', function (event) {
                     cache.put(event.request, networkResponse.clone());
                     return networkResponse;
                 });
-                if(event.request.method === "POST"){
+                if (event.request.method === "POST" || event.request.url === "http://localhost:7777/api/posts") {
                     return fetchPromise
-                }else{
-                return response || fetchPromise;
-            }
+                }else {
+                    return response || fetchPromise;
+                }
             });
         }),
     );

@@ -10,4 +10,8 @@ Assets.get('/styles.css', function (req: any, res: any) {
     res.type('.css').send(readFileSync('Assets/styles.css').toString());
 })
 
+Assets.get('/danger.svg', function (req: any, res: any) {
+    res.type('.svg').send(readFileSync('Assets/danger.svg').toString());
+})
+
 export default Assets

@@ -21,7 +21,6 @@ Register.post('/register', createAccountLimiter, function (req: any, res: any) {
         }
         try {
             conn.use('cackle')
-            console.log(req.body)
             r.table('users').filter(r.row('username').eq(req.body.username)).
                 run(conn, function (err, cursor) {
                     try {
