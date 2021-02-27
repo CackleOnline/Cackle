@@ -14,4 +14,8 @@ Assets.get('/danger.svg', function (req: any, res: any) {
     res.type('.svg').send(readFileSync('Assets/danger.svg').toString());
 })
 
+Assets.get('/logo.png', function (req: any, res: any) {
+    res.type('.png').send(readFileSync('Assets/logo.png'));
+})
+
 export default Assets

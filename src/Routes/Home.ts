@@ -5,7 +5,7 @@ Home.get('/', function (req: any, res: any) {
     if(req.cookies.token != undefined){
         res.render('Home', {token : req.cookies.token});
     }else{
-        res.render('Login')
+        res.render('Landing')
     }
 })
 

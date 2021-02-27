@@ -170,8 +170,19 @@ function postMessage() {
 
 load()
 
-document.getElementById('submitPost').onclick = postMessage
+if(document.getElementById('submitPost') !== null){
+ document.getElementById('submitPost').addEventListener('click', ()=>{
+    postMessage()
+})
+}
+if(document.getElementById('submitLogin') !== null || document.getElementById('submitLogin') !== undefined){
+document.getElementById('submitLogin').addEventListener('click', ()=>{
+    login()
+})
+}
 
-document.getElementById('submitLogin').onclick = login
-
-document.getElementById('submitRegister').onclick = register
+if(document.getElementById('submitRegister') !== null){
+document.getElementById('submitRegister').addEventListener('click', ()=>{
+    register()
+})
+}

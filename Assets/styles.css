@@ -139,3 +139,46 @@ html {
     color: white;
     margin: 5px;
 }
+
+.landingnav {
+    text-align: center;
+    background-color: black;
+    border-radius: 10px;
+    padding-bottom: 25px;
+}
+
+.landingnav img {
+    max-height: 70px;
+}
+
+.landingnav a {
+    padding: 15px;
+    background-color: #242424;
+    margin: 10px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: white;
+}
+
+.landingcontainer {
+    margin-top: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1500px
+}
+
+.landingcontainer .info-card {
+    background-color: #2f2f2f;
+    padding: 10px;
+    border-radius: 10px;
+    word-wrap: normal;
+    margin-left: auto;
+    margin-right: auto;
+    width: 500px;
+}
+
+.landingcontainer .info-card img {
+    border-radius: 5px;
+    margin-left:10px;
+    width: 250px;
+}
