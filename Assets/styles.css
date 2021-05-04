@@ -1,143 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap');
+
 html {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    height: 98.5%;
-    background-color: #3f3f3f;
-    color: white;
-}
-
-.parent { 
-    display: grid; 
-    grid-template-columns: 45% repeat(2, 15%) 25%; 
-    grid-template-rows: repeat(4, 1fr); 
-    grid-column-gap: 0px;
-    grid-row-gap: 0px; 
     height: 100%;
-    max-width: 1050px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-@media only screen and (min-width: 800px) {
-    .div1 { grid-area: 1 / 1 / 6 / 2; overflow-y: scroll; margin-right: 10px; padding: 5px;} 
-.div2 { grid-area: 1 / 2 / 6 / 4;  background-color: #242424; border-radius: 10px 0px 0px 10px;} 
-.div3 { grid-area: 1 / 4 / 6 / 5; background-color: #242424;border-radius: 0px 10px 10px 0px;} 
-.div4 { grid-area: 1 / 4 / 6 / 5; background-color: #242424; border-radius: 0px 10px 10px 0px;} 
-.div5 { grid-area: 4 / 2 / 6 / 5; background-color: #1d1d1d; margin: 10px; border-radius: 10px;} 
-}
-
-@media only screen and (max-width: 800px) {
-    .div1 { grid-area: 1 / 1 / 6 / 5; overflow-y: scroll;} 
-    .div2 { grid-area: 1 / 2 / 6 / 5;  background-color: #242424; border-radius: 10px 0px 0px 10px; display:none;} 
-    .div3 { grid-area: 1 / 3 / 6 / 5; background-color: #242424; display: none;} 
-    .div4 { grid-area: 1 / 4 / 6 / 5; background-color: #242424; border-radius: 0px 10px 10px 0px; display: none;} 
-    .div5 { grid-area: 5 / 2 / 6 / 5; background-color: #1d1d1d; margin: 10px; border-radius: 10px;display: none;} 
-}
-
-.div1::-webkit-scrollbar-track {
-    background:#313131;
-  }
-
-  .div1::-webkit-scrollbar {
-    background:#313131;
-    border-radius:10px;
-    width:9px;
-  }
-  .div1::-webkit-scrollbar-track {
-    background:transparent;
-  }
-  .div1::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background:#999;
-  }
-
-.post {
-    background-color: #242424;
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 500px;
-    min-height: 70px;
-    border-radius: 10px;
-    display: block;
-    margin-bottom: 15px;
-}
-
-.post p {
-    margin-top: 0;
-    padding:5px;
-}
-
-.post .posthead {
-    background-color: #1d1d1d;
-    padding: 10px;
-    max-width: 100%;
-    overflow: hidden;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-}
-
-.post input {
-    background-color: #1d1d1d;
-    padding: 10px;
-
-    max-width: 100%;
-    border-radius: 10px;
-    border: 0px solid transparent;
+    background-color: #000;
     color: white;
-    margin: 5px;
 }
 
-.posthead #title {
-    background-color: #242424;
-    padding: 10px;
-
-    max-width: 100%;
-    border-radius: 10px;
-    border: 0px solid transparent;
-    color: white;
-    margin: 5px;
+.grid-container {
+    display: grid;
+    grid-template-columns: 380px 1fr 1fr 400px;
+    grid-template-rows: 75px 1fr 1fr 1fr 75px;
+    gap: 0px 0px;
+    grid-template-areas:
+      "logo main main r-sb"
+      "l-sb main main r-sb"
+      "l-sb main main r-sb"
+      "l-sb main main r-sb"
+      "l-sb main main msgbox";
+      height: 100%;
+      width: 100%;
 }
-
-.post input {
-    background-color: #1d1d1d;
-    padding: 10px;
-
-    max-width: 100%;
-    border-radius: 10px;
-    border: 0px solid transparent;
-    color: white;
-    margin: 5px;
+  
+.l-sb { 
+    border-right:1px solid rgb(68, 68, 68);
+    padding: 25px;
+    grid-area: l-sb;
+    display:inline-block;
 }
-
-.post button {
-    background-color: #1d1d1d;
-    padding: 10px;
-
-    max-width: 100%;
-    border-radius: 10px;
-    border: 0px solid transparent;
-    color: white;
-    margin: 5px;;
+  
+.msgbox { 
+    grid-area: msgbox; 
+    border-left:1px solid rgb(68, 68, 68);
 }
-
-.error {
-    text-align: center;
-    padding: 10px;
+  
+.main { 
+    grid-area: main; 
+    overflow: scroll;
 }
-
-.error img {
-    max-width:100px
+  
+.r-sb { 
+    grid-area: r-sb; 
+    padding: 25px;
+    border-left:1px solid rgb(68, 68, 68);
 }
-
-.post textarea {
-    resize: vertical;
-    background-color: #1d1d1d;
-    padding: 10px;
-    margin: 10px;
-    width: 93%;
-    border-radius: 10px;
-    border: 0px solid transparent;
-    color: white;
-    margin: 5px;
+  
+.logo { 
+    border-right:1px solid rgb(68, 68, 68);
+    grid-area: logo; 
 }
 
 .landingnav {
@@ -181,4 +91,74 @@ html {
     border-radius: 5px;
     margin-left:10px;
     width: 250px;
+}
+
+#debug {
+
+    position: absolute;
+    padding: 5px;
+    background-color: #757575bb;
+    display: none;
+    top:0;
+    right: 0;
+}
+
+#console {
+    background-color: #acacac;
+    margin: 5px;
+    border-radius: 5px;
+    border: 2px solid #1d1d1d;
+    height: 300px;
+    width: 500px;
+    overflow:scroll;
+}
+
+.navbutton {
+    display: flex;
+    border: 1px solid rgb(68, 68, 68);
+    margin: 2px;
+    margin-bottom: 15px;
+    padding: 20px;
+    width: 1fr;
+    user-select: none;
+    cursor:pointer;
+}
+
+.app-logo::after {
+    position: relative;
+    top: -27px;
+    content: "cAcKleonline";
+    font-family: 'Major Mono Display', monospace;
+    color: white;
+    left: 5px;
+    font-size: 30;
+}
+
+.post {
+    margin-left: auto;
+    margin-right: auto;
+    width: 450px;
+    padding: 5px;
+    border: 1px solid rgb(68, 68, 68);
+    margin-bottom: 10px;
+}
+
+.post .posth {
+    padding: 5px;
+    border-bottom: 1px solid rgb(68, 68, 68);
+}
+
+.post .postf {
+    padding: 5px;
+    border-top: 1px solid rgb(68, 68, 68);
+}
+
+.welcome {
+    margin: 5px;
+}
+
+.centered {
+    width: 450px;
+    margin-left: auto;
+    margin-right: auto;
 }

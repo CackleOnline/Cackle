@@ -36,14 +36,12 @@ Posts.get('/posts/:user', function (req: any, res: any) {
             return;
         }
 
-        r.table('posts').orderBy({index:'id'}).
+        r.table('posts').orderBy({index:'id'}).filter(r.row('author').eq(req.params.user)).
             run(conn, function (err, cursor) {
                 if (err) throw err;
                 cursor.toArray(function (err, result) {
                     if (err) throw err;
-                    result.sort(function (a, b) {
-                        return a.timestamp - b.timestamp;
-                      });
+                    
                     var results = JSON.stringify(result, null, 2)
                     res.set('Cache-Control', 'no-store')
                     res.send(result)

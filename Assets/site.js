@@ -4,6 +4,24 @@ if ('serviceWorker' in navigator) {
     });
 }
 
+console.stdlog = console.log.bind(console);
+console.logs = [];
+console.log = function(){
+    console.logs.push(Array.from(arguments));
+    console.stdlog.apply(console, arguments);
+    document.getElementById('console').innerHTML = console.logs.join('<br>')
+}
+window.onerror = 
+function (msg, source, lineNo, columnNo, error) {
+  console.logs.push("<br/><span style='color:red'>Error: " + msg + 
+        "<br> Script: " + source + 
+        "<br> Line: " + lineNo + 
+        "<br> Column: " + columnNo + 
+        "<br> StackTrace: " + error+"</span>");
+        document.getElementById('console').innerHTML = console.logs.join('<br>')
+  return true;
+};
+
 function timetampToTime(timestamp){
     var yeet1 = new Date()
     var yeet2 = new Date(timestamp)
@@ -88,17 +106,18 @@ fetch('/assets/danger.svg')
 
 let contents = ""
 
-function load(){
+function loadPosts(){
+    contents = ""
     if(navigator.onLine){
         fetch('/api/posts').then(res => res.json()).then(res => {
             for (let i = 0; i < res.length; i++) {
                 const post = res[i];
-                contents += `<div class="post"><div class="posthead"> ${post.title}  •  ${post.author} •  ${timetampToTime(post.timestamp)} </div><p> ${post.content} </p> </div>`
+                contents += `<div class="post"><div class="posth">${post.title} by ${post.author} @ ${timetampToTime(post.timestamp)}</div><p> ${post.content} </p> </div>`
             }
-            document.getElementById("posts").innerHTML = contents
+            document.getElementById("main").innerHTML = contents
         })
     }else{
-        document.getElementById("posts").innerHTML = `<div class="post error"> <img src="/assets/danger.svg" alt="alert"/> <br/> It appears that you are offline, try again later of refresh the page </div>`
+        document.getElementById("main").innerHTML = `<div class="post error"> <img src="/assets/danger.svg" alt="alert"/> <br/> It appears that you are offline, try again later of refresh the page </div>`
     }
 }
 
@@ -153,10 +172,10 @@ function getUserInfo() {
         headers: {
             'Authentication': getCookie('token')
         }
-    }).then(res => res.json()).then(res => { document.getElementById('userdiv').innerHTML = `<h2>Logged in as ${res.account}</h2>`})
+    }).then(res => res.json()).then(res => { document.getElementById('r-sb').innerHTML = `<h2 class="welcome">Welcome back, ${res.account}!</h2>`})
 }
 
-function postMessage() {
+function postMessage1() {
     var data = { title: document.getElementById('title').value, content: document.getElementById('message').value }
     fetch('/api/post', {
         method: 'POST',
@@ -165,17 +184,14 @@ function postMessage() {
             'Authentication': getCookie('token')
         },
         body: JSON.stringify(data)
-    }).then(res => res.json()).then(res => { contents = ""; console.log(res); load() })
+    }).then(res => res.json()).then(res => { contents = ""; console.log(res); loadPosts() })
 }
-
-load()
 
 if(document.getElementById('submitPost') !== null){
- document.getElementById('submitPost').addEventListener('click', ()=>{
-    postMessage()
-})
+    document.getElementById('submitPost').addEventListener('click', (e,b)=>{postMessage1(e,b); console.log(e + 'HHH'+ b)})
 }
-if(document.getElementById('submitLogin') !== null || document.getElementById('submitLogin') !== undefined){
+
+if(document.getElementById('submitLogin') !== null){
 document.getElementById('submitLogin').addEventListener('click', ()=>{
     login()
 })
@@ -183,6 +199,65 @@ document.getElementById('submitLogin').addEventListener('click', ()=>{
 
 if(document.getElementById('submitRegister') !== null){
 document.getElementById('submitRegister').addEventListener('click', ()=>{
-    register()
-})
+    register()})
 }
+function toggleDebug(){
+    document.getElementById('debug').style.display = 'block'
+    debug()
+    document.getElementById('debug').innerHTML = '<span><button onclick="clearCache()">Clear Cache</button></span> • <span><button onclick="unregisterSW()">Unregister SW</button></span> • <span><button onclick="loadPosts()">Reload Posts</button></span><br/>' + document.getElementById('debug').innerHTML
+}
+
+function clearCache(){
+    caches.delete('cackle-cache').then(function(thing) {
+        console.log('Cache successfully cleared')
+    });
+}
+
+function unregisterSW(){
+    navigator.serviceWorker.getRegistration('./sw.js').then(e => e.unregister().then(function(boolean) {
+        if(boolean){
+            console.log('Successfully Unregistered service worker')
+        }else{
+            console.log('Could Not Unregister service worker')
+        }
+    }))
+}
+
+function debug(){
+    if(document.getElementById('debug').style.display === 'none'){
+
+    }else{
+        document.getElementById('debugm').innerHTML = `<span>online: ${navigator.onLine}</span><br>`
+        requestAnimationFrame(debug)
+    }
+}
+
+function navigate(page) {
+    if (page === 'posts') {
+        loadPosts()
+    }else if (page === 'profile'){
+        contents = ""
+    if(navigator.onLine){
+        fetch('/cauth/token', {
+            method: 'GET',
+            headers: {
+                'Authentication': getCookie('token')
+            }
+        }).then(res => res.json()).then(res1 => {
+            fetch('/api/posts/'+res1.account).then(res => res.json()).then(res => {
+                res.reverse()
+                contents = `<h2 class="centered">Posts by ${res1.account}</h2>`
+                for (let i = 0; i < res.length; i++) {
+                    const post = res[i];
+                    contents += `<div class="post"><div class="posth">${post.title} by ${post.author} @ ${timetampToTime(post.timestamp)}</div><p> ${post.content} </p> </div>`
+                }
+                document.getElementById("main").innerHTML = contents
+            })
+        })
+    }else{
+        document.getElementById("main").innerHTML = `<div class="post error"> <img src="/assets/danger.svg" alt="alert"/> <br/> It appears that you are offline, try again later of refresh the page </div>`
+    }
+    }
+}
+
+navigate('posts')

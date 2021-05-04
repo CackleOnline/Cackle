@@ -26,7 +26,7 @@ self.addEventListener('fetch', function (event) {
                     cache.put(event.request, networkResponse.clone());
                     return networkResponse;
                 });
-                if (event.request.method === "POST" || event.request.url === "http://localhost:7777/api/posts") {
+                if (event.request.method === "POST" || event.request.url === "http://localhost:7777/api/post") {
                     return fetchPromise
                 }else {
                     return response || fetchPromise;

@@ -18,4 +18,18 @@ Assets.get('/logo.png', function (req: any, res: any) {
     res.type('.png').send(readFileSync('Assets/logo.png'));
 })
 
+Assets.get('/logo-512.png', function (req: any, res: any) {
+    res.type('.png').send(readFileSync('Assets/logo-512.png'));
+})
+
+Assets.get('/icon-home.svg', function (req: any, res: any) {
+    res.type('.svg').send(readFileSync('Assets/icon-home.svg'));
+})
+Assets.get('/icon-mgnfgls.svg', function (req: any, res: any) {
+    res.type('.svg').send(readFileSync('Assets/icon-mgnfgls.svg'));
+})
+Assets.get('/icon-msg.svg', function (req: any, res: any) {
+    res.type('.svg').send(readFileSync('Assets/icon-msg.svg'));
+})
+
 export default Assets

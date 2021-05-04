@@ -3,9 +3,9 @@
     "name": "CackleOnline",
     "icons": [
         {
-            "src": "https://i.imgur.com/G0Bi20m.png",
+            "src": "assets/logo-512.png",
             "type": "image/png",
-            "sizes": "192x192"
+            "sizes": "512x512"
         }
     ],
     "start_url": "/",

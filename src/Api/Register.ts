@@ -39,7 +39,7 @@ Register.post('/register', createAccountLimiter, function (req: any, res: any) {
                                                 res.send({ message: "your password must be at least 5 characters long" })
                                             }
                                         } else {
-                                            res.send({ message: "that is not a valid username" })
+                                            res.send({ message:  req.body.username + " is not a valid username" })
                                         }
                                     } else {
                                         res.send({ message: "that is not a valid email" })
