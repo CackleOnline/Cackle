@@ -112,9 +112,30 @@ function loadPosts(){
         fetch('/api/posts').then(res => res.json()).then(res => {
             for (let i = 0; i < res.length; i++) {
                 const post = res[i];
-                contents += `<div class="post"><div class="posth">${post.title} by ${post.author} @ ${timetampToTime(post.timestamp)}</div><p> ${post.content} </p> </div>`
+                contents += `<div class="post"><div class="posth"><a href="#" onclick="loadPost(${post.id})">${post.title}</a> by ${post.author} @ ${timetampToTime(post.timestamp)}</div><p> ${post.content} </p> </div>`
             }
             document.getElementById("main").innerHTML = contents
+        })
+    }else{
+        document.getElementById("main").innerHTML = `<div class="post error"> <img src="/assets/danger.svg" alt="alert"/> <br/> It appears that you are offline, try again later of refresh the page </div>`
+    }
+}
+
+function loadPost(postNum){
+    contents = ""
+    if(navigator.onLine){
+        fetch('/api/post/'+postNum.toString()).then(res => res.json()).then(res => {
+            
+                const post = res[0];
+                contents += `<div class="post"><div class="posth">${post.title} by ${post.author} @ ${timetampToTime(post.timestamp)}</div><p> ${post.content} </p> </div>`
+                document.getElementById("main").innerHTML = contents
+                fetch('/api/comments/'+postNum).then(res => res.json()).then(res1 => {
+                    for (let i = 0; i < res1.length; i++) {
+                        const post1 = res1[i];
+                        contents += `<div class="post"><div class="posth">Commented by ${post1.author} @ ${timetampToTime(post1.timestamp)}</div><p> ${post1.content} </p> </div>`
+                    }
+                    document.getElementById("main").innerHTML = contents
+                })
         })
     }else{
         document.getElementById("main").innerHTML = `<div class="post error"> <img src="/assets/danger.svg" alt="alert"/> <br/> It appears that you are offline, try again later of refresh the page </div>`

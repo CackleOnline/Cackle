@@ -13,7 +13,8 @@ import TokenInfo from './Api/TokenInfo'
 import Login from './Routes/Login'
 import Register1 from './Routes/Register'
 import SW from './Routes/ServiceWorker'
-//import Comment1 from './Api/Comment'
+import Comment1 from './Api/Comment'
+import Comments from './Api/Comments'
 
 //express stuff
 var App = app()
@@ -35,7 +36,8 @@ App.use('/pages', Home)
 App.use('/api', Posts)
 App.use('/api', Post)
 //App.use('/api', Follow)
-//App.use('/api', Comment1)
+App.use('/api', Comments)
+App.use('/api', Comment1)
 
 //authentication routes
 App.use('/cauth', Auth)

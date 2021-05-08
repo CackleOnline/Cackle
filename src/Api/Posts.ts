@@ -26,6 +26,35 @@ Posts.get('/posts', function (req: any, res: any) {
 }
 })
 
+Posts.get('/post/:id', function (req: any, res: any) {
+    try{
+    r.connect(rethinkDbConnectionObject, (err, conn) => {
+        conn.use('cackle')
+        if (err) {
+            console.error('Error:', err)
+            res.send([])
+            return;
+        }
+
+        r.table('posts').filter(r.row('id').eq(parseInt(req.params.id))).
+            run(conn, function (err, cursor) {
+                if (err) console.log(err);
+                cursor.toArray(function (err, result) {
+                    if (err) console.log(err);
+                    
+                    var results = JSON.stringify(result, null, 2)
+                    res.set('Cache-Control', 'no-store')
+                    console.log(results)
+                    res.send(result)
+                });
+            });
+    });
+}catch(e){
+    console.log(e)
+    res.send({message:"an error occured"})
+}
+})
+
 Posts.get('/posts/:user', function (req: any, res: any) {
     try{
     r.connect(rethinkDbConnectionObject, (err, conn) => {
