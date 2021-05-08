@@ -27,21 +27,29 @@ Auth.post('/auth', function (req: any, res: any) {
             conn.use('cackle')
             r.table('users').filter(r.row('username').eq(req.body.username)).
                 run(conn, function (err, cursor) {
-                    if (err) throw err;
-                    cursor.toArray(function (err, result) {
+                    try {
                         if (err) throw err;
-                        console.log(result[0].password)
-                        if (compareSync(req.body.password, result[0].password)) {
-                            var token = tokenGen(75)
-                            r.table('logins').insert({ token: token, account: result[0].username, expire: Date.now() + (1000 * 3600) }).run(conn)
-                            res.send({ token: token })
-                        } else {
-                            res.send({ message: "error" })
-                        }
-                    });
+                        cursor.toArray(function (err, result) {
+                            try {
+                                if (err) throw err;
+                                if (compareSync(req.body.password, result[0].password)) {
+                                    var token = tokenGen(75)
+                                    r.table('logins').insert({ token: token, account: result[0].username, expire: Date.now() + (1000 * 604800), uid: result[0].id }).run(conn)
+                                    res.send({ token: token })
+                                } else {
+                                    res.send({ message: "error" })
+                                }
+                            } catch (e) {
+                                res.send({ message: "error" })
+                            }
+                        });
+                    } catch (e) {
+                        console.log(e)
+                        res.send({ message: "error" })
+                    }
                 });
         } catch (e) {
-            res.send('error')
+            res.send({ message: "error" })
         }
     });
 })

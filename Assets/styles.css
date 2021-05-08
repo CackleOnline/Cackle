@@ -1,0 +1,169 @@
+@import url('https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap');
+
+html {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    height: 100%;
+    background-color: #000;
+    color: white;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 380px 1fr 1fr 400px;
+    grid-template-rows: 75px 1fr 1fr 1fr 75px;
+    gap: 0px 0px;
+    grid-template-areas:
+      "logo main main r-sb"
+      "l-sb main main r-sb"
+      "l-sb main main r-sb"
+      "l-sb main main r-sb"
+      "l-sb main main msgbox";
+      height: 100%;
+      width: 100%;
+}
+  
+.l-sb { 
+    border-right:1px solid rgb(68, 68, 68);
+    padding: 25px;
+    grid-area: l-sb;
+    display:inline-block;
+}
+  
+.msgbox { 
+    grid-area: msgbox; 
+    border-left:1px solid rgb(68, 68, 68);
+}
+  
+.main { 
+    grid-area: main; 
+    overflow: scroll;
+}
+  
+.r-sb { 
+    grid-area: r-sb; 
+    padding: 25px;
+    border-left:1px solid rgb(68, 68, 68);
+}
+  
+.logo { 
+    border-right:1px solid rgb(68, 68, 68);
+    grid-area: logo; 
+}
+
+.landingnav {
+    text-align: center;
+    background-color: black;
+    border-radius: 10px;
+    padding-bottom: 25px;
+}
+
+.landingnav img {
+    max-height: 70px;
+}
+
+.landingnav a {
+    padding: 15px;
+    background-color: #242424;
+    margin: 10px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: white;
+}
+
+.landingcontainer {
+    margin-top: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1500px
+}
+
+.landingcontainer .info-card {
+    background-color: #2f2f2f;
+    padding: 10px;
+    border-radius: 10px;
+    word-wrap: normal;
+    margin-left: auto;
+    margin-right: auto;
+    width: 500px;
+}
+
+.landingcontainer .info-card img {
+    border-radius: 5px;
+    margin-left:10px;
+    width: 250px;
+}
+
+#debug {
+
+    position: absolute;
+    padding: 5px;
+    background-color: #757575bb;
+    display: none;
+    top:0;
+    right: 0;
+}
+
+#console {
+    background-color: #acacac;
+    margin: 5px;
+    border-radius: 5px;
+    border: 2px solid #1d1d1d;
+    height: 300px;
+    width: 500px;
+    overflow:scroll;
+}
+
+.navbutton {
+    display: flex;
+    border: 1px solid rgb(68, 68, 68);
+    margin: 2px;
+    margin-bottom: 15px;
+    padding: 20px;
+    width: 1fr;
+    user-select: none;
+    cursor:pointer;
+}
+
+.app-logo::after {
+    position: relative;
+    top: -27px;
+    content: "cAcKleonline";
+    font-family: 'Major Mono Display', monospace;
+    color: white;
+    left: 5px;
+    font-size: 30;
+}
+
+.post {
+    margin-left: auto;
+    margin-right: auto;
+    width: 450px;
+    padding: 5px;
+    border: 1px solid rgb(68, 68, 68);
+    margin-bottom: 10px;
+}
+
+.post .posth {
+    padding: 5px;
+    border-bottom: 1px solid rgb(68, 68, 68);
+}
+
+.post .postf {
+    padding: 5px;
+    border-top: 1px solid rgb(68, 68, 68);
+}
+
+.welcome {
+    margin: 5px;
+}
+
+.centered {
+    width: 450px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+a {
+    color: white;
+    
+}

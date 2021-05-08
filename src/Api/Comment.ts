@@ -1,9 +1,9 @@
 import rethinkDbConnectionObject from "../db"
 import r from 'rethinkdb'
 import app from 'express'
-var Post = app.Router()
+var Comment1 = app.Router()
 
-Post.post('/post', function (req: any, res: any) {
+Comment1.post('/comment', function (req: any, res: any) {
     r.connect(rethinkDbConnectionObject, (err, conn) => {
         if (err) {
             console.error('Error:', err);
@@ -28,7 +28,7 @@ Post.post('/post', function (req: any, res: any) {
                                             if (err) throw err;
                                             console.log(result1.length)
                                             if (result[0].expire > Date.now()) {
-                                                r.table('posts').insert({ id: result1.length + 1, title: req.body.title, content: req.body.content, author: result[0].account, timestamp: Date.now() }).run(conn)
+                                                r.table('comments').insert({ id: result1.length + 1, post_id: req.body.post, content: req.body.content, author: result[0].account, timestamp: Date.now() }).run(conn)
                                                 res.send({ message: "successful" })
                                             } else {
                                                 res.send({ message: "sorry, your session has expired." })
@@ -52,4 +52,4 @@ Post.post('/post', function (req: any, res: any) {
     });
 })
 
-export default Post
+export default Comment1

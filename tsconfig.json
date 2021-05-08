@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-      "jsx":"preserve",
       "moduleResolution":"node",
       "module": "CommonJS",
       "target": "ESNext",
@@ -24,7 +23,7 @@
   },
   "include": [
       "src/**/*"
-, "src/Views"  ],
+, "src/Views"],
   "exclude": [
       "node_modules",
       "dist/**/*"

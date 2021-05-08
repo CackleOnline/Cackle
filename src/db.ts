@@ -1,4 +1,4 @@
-import r from 'rethinkdb';
+import r, { Connection } from 'rethinkdb';
 
 const rethinkDbConnectionObject = {
     host: 'localhost',
