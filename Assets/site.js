@@ -122,6 +122,7 @@ function loadPosts(){
 }
 
 function loadPost(postNum){
+    window.history.pushState('object or string', 'Title', '/post/'+postNum)
     contents = ""
     if(navigator.onLine){
         fetch('/api/post/'+postNum.toString()).then(res => res.json()).then(res => {
@@ -255,30 +256,44 @@ function debug(){
 
 function navigate(page) {
     if (page === 'posts') {
+        window.history.pushState('object or string', 'Title', '/')
         loadPosts()
     }else if (page === 'profile'){
+        window.history.pushState('object or string', 'Title', '/@me')
         contents = ""
-    if(navigator.onLine){
-        fetch('/cauth/token', {
-            method: 'GET',
-            headers: {
-                'Authentication': getCookie('token')
-            }
-        }).then(res => res.json()).then(res1 => {
-            fetch('/api/posts/'+res1.account).then(res => res.json()).then(res => {
-                res.reverse()
-                contents = `<h2 class="centered">Posts by ${res1.account}</h2>`
-                for (let i = 0; i < res.length; i++) {
-                    const post = res[i];
-                    contents += `<div class="post"><div class="posth">${post.title} by ${post.author} @ ${timetampToTime(post.timestamp)}</div><p> ${post.content} </p> </div>`
+        if(navigator.onLine){
+            fetch('/cauth/token', {
+                method: 'GET',
+                headers: {
+                    'Authentication': getCookie('token')
                 }
-                document.getElementById("main").innerHTML = contents
+            }).then(res => res.json()).then(res1 => {
+                fetch('/api/posts/'+res1.account).then(res => res.json()).then(res => {
+                    res.reverse()
+                    contents = `<h2 class="centered">Posts by ${res1.account}</h2>`
+                    for (let i = 0; i < res.length; i++) {
+                        const post = res[i];
+                        contents += `<div class="post"><div class="posth">${post.title} by ${post.author} @ ${timetampToTime(post.timestamp)}</div><p> ${post.content} </p> </div>`
+                    }
+                    document.getElementById("main").innerHTML = contents
+                })
             })
-        })
-    }else{
-        document.getElementById("main").innerHTML = `<div class="post error"> <img src="/assets/danger.svg" alt="alert"/> <br/> It appears that you are offline, try again later of refresh the page </div>`
-    }
+        }else{
+            document.getElementById("main").innerHTML = `<div class="post error"> <img src="/assets/danger.svg" alt="alert"/> <br/> It appears that you are offline, try again later of refresh the page </div>`
+        }
     }
 }
 
-navigate('posts')
+var pathArray = window.location.pathname.split('/');
+
+if(window.location.pathname === '/post/'+pathArray[2]){
+    try{
+        loadPost(parseInt(pathArray[2]))
+    }catch(e){
+        console.log(e)
+    }
+}else if(window.location.pathname === '/@me'){
+    navigate('profile')
+}else if(window.location.pathname === '/'){
+    navigate('posts')
+}

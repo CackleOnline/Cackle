@@ -24,14 +24,6 @@ App.engine('jsx', require('express-react-views').createEngine())
 App.use(bodyparser.json());
 App.use(cookieParser())
 
-//main website
-App.use('/', Home)
-App.use('/', Login)
-App.use('/', Register1)
-
-//pages
-App.use('/pages', Home)
-
 //api routes
 App.use('/api', Posts)
 App.use('/api', Post)
@@ -47,5 +39,10 @@ App.use('/cauth', TokenInfo)
 //misc. routes
 App.use('/assets', Assets)
 App.use('/', SW)
+
+//main website
+App.use('/', Login)
+App.use('/', Register1)
+App.use('/', Home)
 
 App.listen(7777)
