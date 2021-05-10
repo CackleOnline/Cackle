@@ -110,6 +110,7 @@ function loadPosts(){
     contents = ""
     if(navigator.onLine){
         fetch('/api/posts').then(res => res.json()).then(res => {
+            contents += '<div class="post"> <input type="text" id="title" placeholder="Title"/> <br/> <textarea placeholder="Message" id="message"></textarea> <button onclick="postMessage1()">Send</button> </div> '
             for (let i = 0; i < res.length; i++) {
                 const post = res[i];
                 contents += `<div class="post"><div class="posth"><a href="#" onclick="loadPost(${post.id})">${post.title}</a> by ${post.author} @ ${timetampToTime(post.timestamp)}</div><p> ${post.content} </p> </div>`
@@ -128,9 +129,11 @@ function loadPost(postNum){
         fetch('/api/post/'+postNum.toString()).then(res => res.json()).then(res => {
             
                 const post = res[0];
-                contents += `<div class="post"><div class="posth">${post.title} by ${post.author} @ ${timetampToTime(post.timestamp)}</div><p> ${post.content} </p> </div>`
+                contents += `<div class="post comments"><div class="posth">${post.title} by ${post.author} @ ${timetampToTime(post.timestamp)}</div><p> ${post.content} </p> </div>`
+                contents += `<div class="post"> <textarea placeholder="Comment" id="comment"></textarea> <button onclick="postComment1(${postNum})">Send</button> </div> `
                 document.getElementById("main").innerHTML = contents
                 fetch('/api/comments/'+postNum).then(res => res.json()).then(res1 => {
+                    contents += '<div class="centered">'+res1.length + ' Comments</div>'
                     for (let i = 0; i < res1.length; i++) {
                         const post1 = res1[i];
                         contents += `<div class="post"><div class="posth">Commented by ${post1.author} @ ${timetampToTime(post1.timestamp)}</div><p> ${post1.content} </p> </div>`
@@ -207,6 +210,18 @@ function postMessage1() {
         },
         body: JSON.stringify(data)
     }).then(res => res.json()).then(res => { contents = ""; console.log(res); loadPosts() })
+}
+
+function postComment1(post) {
+    var data = {post:post,content: document.getElementById('comment').value }
+    fetch('/api/comment', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authentication': getCookie('token')
+        },
+        body: JSON.stringify(data)
+    }).then(res => res.json()).then(res => { contents = ""; console.log(res); loadPost(post) })
 }
 
 if(document.getElementById('submitPost') !== null){

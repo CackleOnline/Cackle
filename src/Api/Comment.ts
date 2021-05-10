@@ -19,17 +19,20 @@ Comment1.post('/comment', function (req: any, res: any) {
                         if (err) throw err;
                         cursor.toArray(function (err, result) {
                             if (err) throw err;
-                            console.log(result[0])
-                            r.table('posts').
+                            r.table('comments').
                                 run(conn, function (err, cursor) {
                                     try {
                                         if (err) throw err;
                                         cursor.toArray(function (err, result1) {
                                             if (err) throw err;
-                                            console.log(result1.length)
                                             if (result[0].expire > Date.now()) {
-                                                r.table('comments').insert({ id: result1.length + 1, post_id: req.body.post, content: req.body.content, author: result[0].account, timestamp: Date.now() }).run(conn)
-                                                res.send({ message: "successful" })
+                                                r.table('comments').insert({ id: result1.length + 1, post_id: req.body.post, content: req.body.content, author: result[0].account, timestamp: Date.now() }).run(conn,(err,res1)=>
+                                                {
+                                                    if(err) res.send({ message: "An error has occured" });
+                                                    console.log(res1)
+                                                }
+                                                )
+                                                
                                             } else {
                                                 res.send({ message: "sorry, your session has expired." })
                                             }
