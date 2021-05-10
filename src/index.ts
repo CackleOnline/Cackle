@@ -4,7 +4,7 @@ import cookieParser from 'cookie-parser'
 import Home from './Routes/Home'
 import Posts from './Api/Posts'
 import Post from './Api/Post'
-//import Follow from './Api/Follow'
+import Follow from './Api/Follow'
 import bodyparser from 'body-parser'
 import Auth from './Api/Auth'
 import Register from './Api/Register'
@@ -27,7 +27,7 @@ App.use(cookieParser())
 //api routes
 App.use('/api', Posts)
 App.use('/api', Post)
-//App.use('/api', Follow)
+App.use('/api', Follow)
 App.use('/api', Comments)
 App.use('/api', Comment1)
 

@@ -30,6 +30,16 @@ r.connect(rethinkDbConnectionObject, (err, conn) => {
         console.log('Test post created successfully.');
     })
 
+    r.db('cackle').tableCreate('comments').run(connection, function (err, result) {
+        if (err) throw err;
+        console.log('Table `comments` was created successfully.');
+    })
+
+    r.db('cackle').tableCreate('follows').run(connection, function (err, result) {
+        if (err) throw err;
+        console.log('Table `follows` was created successfully.');
+    })
+
     r.db('cackle').tableCreate('users').run(connection, function (err, result) {
         if (err) throw err;
         console.log('Table `users` was created successfully.');
