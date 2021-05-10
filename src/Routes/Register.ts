@@ -4,7 +4,7 @@ var Register = app.Router()
 
 Register.get('/register', function (req: any, res: any) {
     if(req.cookies.token === undefined){
-        res.send(fs.readFileSync('../../html/Register.html').toString())
+        res.send(fs.readFileSync('./html/Register.html').toString())
     }else{
         res.redirect('/')
     }
