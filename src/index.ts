@@ -15,6 +15,7 @@ import Register1 from './Routes/Register'
 import SW from './Routes/ServiceWorker'
 import Comment1 from './Api/Comment'
 import Comments from './Api/Comments'
+import Follows from './Api/Follows'
 
 //express stuff
 var App = app()
@@ -28,6 +29,7 @@ App.use(cookieParser())
 App.use('/api', Posts)
 App.use('/api', Post)
 App.use('/api', Follow)
+App.use('/api', Follows)
 App.use('/api', Comments)
 App.use('/api', Comment1)
 
