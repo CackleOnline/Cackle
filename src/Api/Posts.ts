@@ -83,4 +83,54 @@ Posts.get('/posts/:user', function (req: any, res: any) {
 }
 })
 
+Posts.get('/feed', function (req: any, res: any) {
+    r.connect(rethinkDbConnectionObject, (err, conn) => {
+        let feed:object[] = []
+        if (err) {
+            console.error('Error:', err);
+            res.send('an error occured')
+            return;
+        }
+        try {
+            conn.use('cackle')
+
+            r.table('logins').filter(r.row('token').eq(req.header('Authentication'))).
+                run(conn, function (err, cursor) {
+                    try {
+                        if (err) throw err;
+                        cursor.toArray(function (err, result) {
+                            if (err) throw err;
+                            r.table('posts').
+                                run(conn, function (err, cursor) {
+                                    try {
+                                        if (err) console.log (err);
+                                        cursor.toArray(function (err, result1) {
+                                            if (err) throw err;
+                                            for (let i = 0; i < result1.length; i++) {
+                                                const element = result1[i].author
+                                                if(element === result[0].account){
+                                                    feed.push(result1[i])
+                                                }
+                                                
+                                            }
+                                            res.send(feed)
+                                        });
+                                    } catch (e) {
+                                        console.log(e)
+                                        res.send({ message: 'an error occured' })
+                                    }
+                                });
+                        });
+                    } catch (e) {
+                        console.log(e)
+                        res.send({ message: 'an error occured' })
+                    }
+                });
+        } catch (e) {
+            console.log(e)
+            res.send({ message: 'an error occured' })
+        }
+    });
+})
+
 export default Posts

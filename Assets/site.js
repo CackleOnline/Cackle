@@ -100,6 +100,21 @@ function timetampToTime(timestamp){
     }
 }
 
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
 
 //this fetch request is for caching purposes
 fetch('/assets/danger.svg')
@@ -109,7 +124,7 @@ let contents = ""
 function loadPosts(){
     contents = ""
     if(navigator.onLine){
-        fetch('/api/posts').then(res => res.json()).then(res => {
+        fetch('/api/feed',{headers: {'Authentication': getCookie('token')}}).then(res => res.json()).then(res => {
             contents += '<div class="post"> <input type="text" id="title" placeholder="Title"/> <br/> <textarea placeholder="Message" id="message"></textarea> <button onclick="postMessage1()">Send</button> </div> '
             for (let i = 0; i < res.length; i++) {
                 const post = res[i];
@@ -173,22 +188,6 @@ function register() {
         },
         body: JSON.stringify(data)
     }).then(res => res.json()).then(res => { console.log(res)})
-}
-
-function getCookie(cname) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
 }
 
 function getUserInfo() {
