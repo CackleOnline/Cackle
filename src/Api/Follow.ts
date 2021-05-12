@@ -26,11 +26,12 @@ Follow.post('/follow/:user', function (req: any, res: any) {
                                         cursor.toArray(function (err, result1) {
                                             if (err) throw err;
                                             if (result[0].expire > Date.now()) {
-                                                r.table('follows').filter(r.row('userFollowed').eq(result[0].account)).filter(r.row('userFollowing').eq(result1[0].username)).
+                                                r.table('follows').filter(r.row('userFollowed').eq(result1[0].username)).filter(r.row('userFollowing').eq(result[0].account)).
                                                     run(conn, function (err, cursor) {
                                                     try {
                                                         if (err) throw err;
                                                         cursor.toArray(function (err, result11) {
+                                                            console.log(result11.length)
                                                             if(result11.length <= 0){
                                                                 r.table('follows').insert({ userFollowed: result1[0].username, userFollowing: result[0].account, timestamp: Date.now() }).run(conn,(err, reseff)=>{
                                                                     console.log(reseff)

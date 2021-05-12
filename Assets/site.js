@@ -129,7 +129,7 @@ function loadPosts(){
             res.reverse()
             for (let i = 0; i < res.length; i++) {
                 const post = res[i];
-                contents += `<div class="post"><div class="posth"><a href="#" onclick="loadPost(${post.id})">${post.title}</a> by ${post.author} @ ${timetampToTime(post.timestamp)}</div><p> ${post.content} </p> </div>`
+                contents += `<div class="post"><div class="posth"><a href="#" onclick="loadPost(${post.id})">${post.title}</a> by <a href="#" onclick="loadPostsByUser('${post.author}')">${post.author}</a> @ ${timetampToTime(post.timestamp)}</div><p> ${post.content} </p> </div>`
             }
             document.getElementById("main").innerHTML = contents
         })
@@ -299,11 +299,63 @@ function navigate(page) {
     }
 }
 
+function followUser(user){
+    fetch('/api/follow/'+user, {
+        method: 'POST',
+        headers: {
+            'Authentication': getCookie('token')
+        }
+    }).then(res => res.json()).then(res1 => {
+        console.log(res)
+    })
+}
+
+function loadPostsByUser(user){
+    window.history.pushState('object or string', 'Title', '/@/'+user)
+        contents = ""
+        if(navigator.onLine){
+            fetch('/cauth/token', {
+                method: 'GET',
+                headers: {
+                    'Authentication': getCookie('token')
+                }
+            }).then(res => res.json()).then(res1 => {
+                fetch('/api/posts/'+user).then(res => res.json()).then(res => {
+                    res.reverse()
+                    contents = `<h2 class="centered">Posts by ${user} <button id="followbtn" >Follow ${user}</button></h2>`
+                    for (let i = 0; i < res.length; i++) {
+                        const post = res[i];
+                        contents += `<div class="post"><div class="posth">${post.title} by ${post.author} @ ${timetampToTime(post.timestamp)}</div><p> ${post.content} </p> </div>`
+                    }
+                    document.getElementById("main").innerHTML = contents
+                    document.getElementById('followbtn').addEventListener('click', ()=>{
+                        if(window.location.pathname === '/@/'+pathArray[2]){
+                            try{
+                                followUser(pathArray[2])
+                            }catch(e){
+                                console.log(e)
+                            }
+                        }
+                    })
+                })
+            })
+        }else{
+            document.getElementById("main").innerHTML = `<div class="post error"> <img src="/assets/danger.svg" alt="alert"/> <br/> It appears that you are offline, try again later of refresh the page </div>`
+        }
+}
+
 var pathArray = window.location.pathname.split('/');
+
 
 if(window.location.pathname === '/post/'+pathArray[2]){
     try{
         loadPost(parseInt(pathArray[2]))
+    }catch(e){
+        console.log(e)
+    }
+}else if(window.location.pathname === '/@/'+pathArray[2]){
+    try{
+        loadPostsByUser(pathArray[2])
     }catch(e){
         console.log(e)
     }

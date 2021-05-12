@@ -101,20 +101,29 @@ Posts.get('/feed', function (req: any, res: any) {
                         cursor.toArray(function (err, result) {
                             if (err) throw err;
                             r.table('posts').orderBy({index:'id'}).
-                                run(conn, function (err, cursor) {
+                                run(conn, function (err, cursor1) {
                                     try {
                                         if (err) console.log (err);
-                                        cursor.toArray(function (err, result1) {
+                                        cursor1.toArray(function (err, result1) {
                                             if (err) throw err;
-                                            for (let i = 0; i < result1.length; i++) {
-                                                const element = result1[i].author
-                                                if(element === result[0].account){
-                                                    feed.push(result1[i])
-                                                }
-                                                
-                                            }
-                                            res.send(feed)
-                                        });
+
+                                            r.table('follows').filter(r.row('userFollowing').eq(result[0].account)).
+                                            run(conn, function (err, cursor2) {
+                                                if (err) throw err;
+                                                cursor2.toArray(function (err, resultI) {
+                                                    if (err) throw err;
+                                                    for (let i = 0; i < result1.length; i++) {
+                                                        for (let l = 0; l < resultI.length; l++) {
+                                                            const element = resultI[l].userFollowed;
+                                                            if(result1[i].author === resultI[l].userFollowed){
+                                                                feed.push(result1[i])
+                                                            }
+                                                        }
+                                                    }
+                                                    res.send(feed)
+                                                });
+                                            });
+                                    })
                                     } catch (e) {
                                         console.log(e)
                                         res.send({ message: 'an error occured' })
