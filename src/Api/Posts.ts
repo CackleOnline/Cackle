@@ -100,7 +100,7 @@ Posts.get('/feed', function (req: any, res: any) {
                         if (err) throw err;
                         cursor.toArray(function (err, result) {
                             if (err) throw err;
-                            r.table('posts').
+                            r.table('posts').orderBy({index:'id'}).
                                 run(conn, function (err, cursor) {
                                     try {
                                         if (err) console.log (err);

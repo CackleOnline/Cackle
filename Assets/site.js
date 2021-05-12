@@ -126,6 +126,7 @@ function loadPosts(){
     if(navigator.onLine){
         fetch('/api/feed',{headers: {'Authentication': getCookie('token')}}).then(res => res.json()).then(res => {
             contents += '<div class="post"> <input type="text" id="title" placeholder="Title"/> <br/> <textarea placeholder="Message" id="message"></textarea> <button onclick="postMessage1()">Send</button> </div> '
+            res.reverse()
             for (let i = 0; i < res.length; i++) {
                 const post = res[i];
                 contents += `<div class="post"><div class="posth"><a href="#" onclick="loadPost(${post.id})">${post.title}</a> by ${post.author} @ ${timetampToTime(post.timestamp)}</div><p> ${post.content} </p> </div>`
