@@ -143,6 +143,10 @@ html {
     margin-bottom: 10px;
 }
 
+.post.comments {
+    margin-bottom: 10px;
+}
+
 .post .posth {
     padding: 5px;
     border-bottom: 1px solid rgb(68, 68, 68);
@@ -166,4 +170,30 @@ html {
 a {
     color: white;
     
+}
+
+input {
+    border: 1px solid rgb(68, 68, 68);
+    padding: 5px;
+    color: white;
+    background-color: #000;
+    margin-bottom: 5px;
+}
+
+textarea {
+    border: 1px solid rgb(68, 68, 68);
+    padding: 5px;
+    color: white;
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
+    background-color: #000;
+    margin-bottom: 5px;
+}
+
+button {
+    border: 1px solid rgb(68, 68, 68);
+    padding: 5px;
+    color: white;
+    background-color: #000;
 }

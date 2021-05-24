@@ -1,7 +1,30 @@
 import rethinkDbConnectionObject from "../db"
 import r from 'rethinkdb'
 import app from 'express'
+import crypto from 'crypto'
 var Post = app.Router()
+
+function randombits(length) {
+   var result           = '';
+   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+   var charactersLength = characters.length;
+   for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+   }
+   return result;
+}
+
+
+const SNOWFLAKE_EPOCH = Date.UTC(2021, 0, 1);
+const UNSIGNED_23BIT_MAX = 8388607; // (Math.pow(2, 23) - 1) >> 0
+
+const SNOWFLAKE_TIMESTAMP_SHIFT = 23n;
+
+var snowflake = (ts = Date.now(), epoch = SNOWFLAKE_EPOCH) =>{
+    var thingy = (BigInt(ts - epoch) << SNOWFLAKE_TIMESTAMP_SHIFT) + BigInt(Math.round(Math.random() * UNSIGNED_23BIT_MAX));
+    return parseInt(thingy.toString(10))
+}
+
 
 Post.post('/post', function (req: any, res: any) {
     r.connect(rethinkDbConnectionObject, (err, conn) => {
@@ -28,7 +51,7 @@ Post.post('/post', function (req: any, res: any) {
                                             if (err) throw err;
                                             console.log(result1.length)
                                             if (result[0].expire > Date.now()) {
-                                                r.table('posts').insert({ id: result1.length + 1, title: req.body.title, content: req.body.content, author: result[0].account, timestamp: Date.now() }).run(conn)
+                                                r.table('posts').insert({ id: snowflake(Date.now(), SNOWFLAKE_EPOCH), title: req.body.title, content: req.body.content, author: result[0].account, timestamp: Date.now() }).run(conn)
                                                 res.send({ message: "successful" })
                                             } else {
                                                 res.send({ message: "sorry, your session has expired." })

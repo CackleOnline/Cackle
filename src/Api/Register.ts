@@ -28,10 +28,11 @@ Register.post('/register', createAccountLimiter, function (req: any, res: any) {
                         cursor.toArray(function (err, result) {
                             try{
                                 if (err) throw err;
+                                console.log()
                                 if (result.length <= 0) {
                                     if (req.body.email === req.body.email.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g)[0]) {
-                                        if (req.body.username.toLowerCase() === req.body.username.match(/[A-z0-9]{3,10}/g)[0]) {
-                                            if (res.body.password.length >= 5) {
+                                        if (req.body.username.toLowerCase() === req.body.username.match(/[A-z0-9]{3,13}/g)[0]) {
+                                            if (req.body.password.length >= 5) {
                                                 var hash = hashSync(req.body.password, 12)
                                                 r.table('users').insert({ username: req.body.username, email: req.body.email, password: hash }).run(conn)
                                                 res.send({ message: "account created successfully" })

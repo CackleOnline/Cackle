@@ -100,6 +100,21 @@ function timetampToTime(timestamp){
     }
 }
 
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
 
 //this fetch request is for caching purposes
 fetch('/assets/danger.svg')
@@ -109,10 +124,12 @@ let contents = ""
 function loadPosts(){
     contents = ""
     if(navigator.onLine){
-        fetch('/api/posts').then(res => res.json()).then(res => {
+        fetch('/api/feed',{headers: {'Authentication': getCookie('token')}}).then(res => res.json()).then(res => {
+            contents += '<div class="post"> <input type="text" id="title" placeholder="Title"/> <br/> <textarea placeholder="Message" id="message"></textarea> <button onclick="postMessage1()">Send</button> </div> '
+            res.reverse()
             for (let i = 0; i < res.length; i++) {
                 const post = res[i];
-                contents += `<div class="post"><div class="posth"><a href="#" onclick="loadPost(${post.id})">${post.title}</a> by ${post.author} @ ${timetampToTime(post.timestamp)}</div><p> ${post.content} </p> </div>`
+                contents += `<div class="post"><div class="posth"><a href="#" onclick="loadPost(${post.id})">${post.title}</a> by <a href="#" onclick="loadPostsByUser('${post.author}')">${post.author}</a> @ ${timetampToTime(post.timestamp)}</div><p> ${post.content} </p> </div>`
             }
             document.getElementById("main").innerHTML = contents
         })
@@ -122,14 +139,17 @@ function loadPosts(){
 }
 
 function loadPost(postNum){
+    window.history.pushState('object or string', 'Title', '/post/'+postNum)
     contents = ""
     if(navigator.onLine){
         fetch('/api/post/'+postNum.toString()).then(res => res.json()).then(res => {
             
                 const post = res[0];
-                contents += `<div class="post"><div class="posth">${post.title} by ${post.author} @ ${timetampToTime(post.timestamp)}</div><p> ${post.content} </p> </div>`
+                contents += `<div class="post comments"><div class="posth">${post.title} by ${post.author} @ ${timetampToTime(post.timestamp)}</div><p> ${post.content} </p> </div>`
+                contents += `<div class="post"> <textarea placeholder="Comment" id="comment"></textarea> <button onclick="postComment1(${postNum})">Send</button> </div> `
                 document.getElementById("main").innerHTML = contents
                 fetch('/api/comments/'+postNum).then(res => res.json()).then(res1 => {
+                    contents += '<div class="centered">'+res1.length + ' Comments</div>'
                     for (let i = 0; i < res1.length; i++) {
                         const post1 = res1[i];
                         contents += `<div class="post"><div class="posth">Commented by ${post1.author} @ ${timetampToTime(post1.timestamp)}</div><p> ${post1.content} </p> </div>`
@@ -171,22 +191,6 @@ function register() {
     }).then(res => res.json()).then(res => { console.log(res)})
 }
 
-function getCookie(cname) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
-}
-
 function getUserInfo() {
     fetch('/cauth/token', {
         method: 'GET',
@@ -206,6 +210,18 @@ function postMessage1() {
         },
         body: JSON.stringify(data)
     }).then(res => res.json()).then(res => { contents = ""; console.log(res); loadPosts() })
+}
+
+function postComment1(post) {
+    var data = {post:post,content: document.getElementById('comment').value }
+    fetch('/api/comment', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authentication': getCookie('token')
+        },
+        body: JSON.stringify(data)
+    }).then(res => res.json()).then(res => { contents = ""; console.log(res); loadPost(post) })
 }
 
 if(document.getElementById('submitPost') !== null){
@@ -255,30 +271,96 @@ function debug(){
 
 function navigate(page) {
     if (page === 'posts') {
+        window.history.pushState('object or string', 'Title', '/')
         loadPosts()
     }else if (page === 'profile'){
+        window.history.pushState('object or string', 'Title', '/@me')
         contents = ""
-    if(navigator.onLine){
-        fetch('/cauth/token', {
-            method: 'GET',
-            headers: {
-                'Authentication': getCookie('token')
-            }
-        }).then(res => res.json()).then(res1 => {
-            fetch('/api/posts/'+res1.account).then(res => res.json()).then(res => {
-                res.reverse()
-                contents = `<h2 class="centered">Posts by ${res1.account}</h2>`
-                for (let i = 0; i < res.length; i++) {
-                    const post = res[i];
-                    contents += `<div class="post"><div class="posth">${post.title} by ${post.author} @ ${timetampToTime(post.timestamp)}</div><p> ${post.content} </p> </div>`
+        if(navigator.onLine){
+            fetch('/cauth/token', {
+                method: 'GET',
+                headers: {
+                    'Authentication': getCookie('token')
                 }
-                document.getElementById("main").innerHTML = contents
+            }).then(res => res.json()).then(res1 => {
+                fetch('/api/posts/'+res1.account).then(res => res.json()).then(res => {
+                    res.reverse()
+                    contents = `<h2 class="centered">Posts by ${res1.account}</h2>`
+                    for (let i = 0; i < res.length; i++) {
+                        const post = res[i];
+                        contents += `<div class="post"><div class="posth">${post.title} by ${post.author} @ ${timetampToTime(post.timestamp)}</div><p> ${post.content} </p> </div>`
+                    }
+                    document.getElementById("main").innerHTML = contents
+                })
             })
-        })
-    }else{
-        document.getElementById("main").innerHTML = `<div class="post error"> <img src="/assets/danger.svg" alt="alert"/> <br/> It appears that you are offline, try again later of refresh the page </div>`
-    }
+        }else{
+            document.getElementById("main").innerHTML = `<div class="post error"> <img src="/assets/danger.svg" alt="alert"/> <br/> It appears that you are offline, try again later of refresh the page </div>`
+        }
     }
 }
 
-navigate('posts')
+function followUser(user){
+    fetch('/api/follow/'+user, {
+        method: 'POST',
+        headers: {
+            'Authentication': getCookie('token')
+        }
+    }).then(res => res.json()).then(res1 => {
+        console.log(res)
+    })
+}
+
+function loadPostsByUser(user){
+    window.history.pushState('object or string', 'Title', '/@/'+user)
+        contents = ""
+        if(navigator.onLine){
+            fetch('/cauth/token', {
+                method: 'GET',
+                headers: {
+                    'Authentication': getCookie('token')
+                }
+            }).then(res => res.json()).then(res1 => {
+                fetch('/api/posts/'+user).then(res => res.json()).then(res => {
+                    res.reverse()
+                    contents = `<h2 class="centered">Posts by ${user} <button id="followbtn" >Follow ${user}</button></h2>`
+                    for (let i = 0; i < res.length; i++) {
+                        const post = res[i];
+                        contents += `<div class="post"><div class="posth">${post.title} by ${post.author} @ ${timetampToTime(post.timestamp)}</div><p> ${post.content} </p> </div>`
+                    }
+                    document.getElementById("main").innerHTML = contents
+                    document.getElementById('followbtn').addEventListener('click', ()=>{
+                        if(window.location.pathname === '/@/'+pathArray[2]){
+                            try{
+                                followUser(pathArray[2])
+                            }catch(e){
+                                console.log(e)
+                            }
+                        }
+                    })
+                })
+            })
+        }else{
+            document.getElementById("main").innerHTML = `<div class="post error"> <img src="/assets/danger.svg" alt="alert"/> <br/> It appears that you are offline, try again later of refresh the page </div>`
+        }
+}
+
+var pathArray = window.location.pathname.split('/');
+
+
+if(window.location.pathname === '/post/'+pathArray[2]){
+    try{
+        loadPost(parseInt(pathArray[2]))
+    }catch(e){
+        console.log(e)
+    }
+}else if(window.location.pathname === '/@/'+pathArray[2]){
+    try{
+        loadPostsByUser(pathArray[2])
+    }catch(e){
+        console.log(e)
+    }
+}else if(window.location.pathname === '/@me'){
+    navigate('profile')
+}else if(window.location.pathname === '/'){
+    navigate('posts')
+}
