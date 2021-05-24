@@ -12,7 +12,12 @@ Comment1.post('/comment', function (req: any, res: any) {
         }
         try {
             conn.use('cackle')
-
+            r.table('posts').filter(r.row('id').eq(req.body.post)).
+                run(conn, function (errr, c) {
+                    c.toArray(function (err, resulth) {
+                        if(resulth.length <= 1){
+                            res.send({message:"the post you where looking for doesnt exist"})
+                        }else{
             r.table('logins').filter(r.row('token').eq(req.header('Authentication'))).
                 run(conn, function (err, cursor) {
                     try {
@@ -47,7 +52,9 @@ Comment1.post('/comment', function (req: any, res: any) {
                         console.log(e)
                         res.send({ message: 'an error occured' })
                     }
-                });
+                })
+                }})
+            })
         } catch (e) {
             console.log(e)
             res.send({ message: 'an error occured' })
