@@ -12,6 +12,7 @@ TokenInfo.get('/token', function (req: any, res: any) {
             return;
         }
         r.table('logins').filter({token: req.header('Authentication')}).run(conn, (data, data2) => {
+            try {
             data2.toArray(function (err, result) {
                 try{
                     if (err) throw err;
@@ -21,6 +22,10 @@ TokenInfo.get('/token', function (req: any, res: any) {
                     res.send({message:"an error occured"})
                 }
             });
+            }catch(e){
+                console.log(e)
+                res.send({message:"an error occured"})
+            }
         })
     });
 }catch(e){

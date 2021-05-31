@@ -1,8 +1,8 @@
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js');
-    });
-}
+//if ('serviceWorker' in navigator) {
+//    window.addEventListener('load', () => {
+//      navigator.serviceWorker.register('/sw.js');
+//    });
+//}
 
 console.stdlog = console.log.bind(console);
 console.logs = [];
@@ -129,7 +129,7 @@ function loadPosts(){
             res.reverse()
             for (let i = 0; i < res.length; i++) {
                 const post = res[i];
-                contents += `<div class="post"><div class="posth"><a href="#" onclick="loadPost(${post.id})">${post.title}</a> by <a href="#" onclick="loadPostsByUser('${post.author}')">${post.author}</a> @ ${timetampToTime(post.timestamp)}</div><p> ${twemoji.parse(post.content,{folder: 'svg',ext: '.svg'})} </p> </div>`
+                contents += `<div class="post"><div class="posth"><a href="#" onclick="loadPost(${post.id})">${twemoji.parse(post.title,{folder: 'svg',ext: '.svg'})}</a> by <a href="#" onclick="loadPostsByUser('${post.author}')">${post.author}</a> @ ${timetampToTime(post.timestamp)}</div><p> ${twemoji.parse(post.content,{folder: 'svg',ext: '.svg'})} </p> </div>`
             }
             document.getElementById("main").innerHTML = contents
         })
@@ -145,7 +145,7 @@ function loadPost(postNum){
         fetch('/api/post/'+postNum.toString()).then(res => res.json()).then(res => {
             
                 const post = res[0];
-                contents += `<div class="post comments"><div class="posth">${post.title} by ${post.author} @ ${timetampToTime(post.timestamp)}</div><p> ${twemoji.parse(post.content,{folder: 'svg',ext: '.svg'})} </p> </div>`
+                contents += `<div class="post comments"><div class="posth"> ${twemoji.parse(post.title,{folder: 'svg',ext: '.svg'})} by ${post.author} @ ${timetampToTime(post.timestamp)}</div><p> ${twemoji.parse(post.content,{folder: 'svg',ext: '.svg'})} </p> </div>`
                 contents += `<div class="post"> <textarea placeholder="Comment" id="comment"></textarea> <button onclick="postComment1(${postNum})">Send</button> </div> `
                 document.getElementById("main").innerHTML = contents
                 fetch('/api/comments/'+postNum).then(res => res.json()).then(res1 => {
@@ -226,6 +226,10 @@ function postComment1(post) {
 
 if(document.getElementById('submitPost') !== null){
     document.getElementById('submitPost').addEventListener('click', (e,b)=>{postMessage1(e,b); console.log(e + 'HHH'+ b)})
+}
+
+if(document.getElementById('submitFollow') !== null){
+    document.getElementById('submitFollow').addEventListener('click', ()=>{followUser(document.getElementById('submitFollow').value); })
 }
 
 if(document.getElementById('submitLogin') !== null){
@@ -322,7 +326,7 @@ function loadPostsByUser(user){
             }).then(res => res.json()).then(res1 => {
                 fetch('/api/posts/'+user).then(res => res.json()).then(res => {
                     res.reverse()
-                    contents = `<h2 class="centered">Posts by ${user} <button id="followbtn" >Follow ${user}</button></h2>`
+                    contents = `<h2 class="centered">Posts by ${user} <button id="followbtn submitFollow" value="${user}" >Follow ${user}</button></h2>`
                     for (let i = 0; i < res.length; i++) {
                         const post = res[i];
                         contents += `<div class="post"><div class="posth">${post.title} by ${post.author} @ ${timetampToTime(post.timestamp)}</div><p> ${post.content} </p> </div>`
