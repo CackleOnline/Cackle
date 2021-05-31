@@ -15,7 +15,7 @@ Comment1.post('/comment', function (req: any, res: any) {
             r.table('posts').filter(r.row('id').eq(req.body.post)).
                 run(conn, function (errr, c) {
                     c.toArray(function (err, resulth) {
-                        if(resulth.length <= 1){
+                        if(resulth.length <= 0){
                             res.send({message:"the post you where looking for doesnt exist"})
                         }else{
             r.table('logins').filter(r.row('token').eq(req.header('Authentication'))).
