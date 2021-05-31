@@ -129,7 +129,7 @@ function loadPosts(){
             res.reverse()
             for (let i = 0; i < res.length; i++) {
                 const post = res[i];
-                contents += `<div class="post"><div class="posth"><a href="#" onclick="loadPost(${post.id})">${post.title}</a> by <a href="#" onclick="loadPostsByUser('${post.author}')">${post.author}</a> @ ${timetampToTime(post.timestamp)}</div><p> ${post.content} </p> </div>`
+                contents += `<div class="post"><div class="posth"><a href="#" onclick="loadPost(${post.id})">${post.title}</a> by <a href="#" onclick="loadPostsByUser('${post.author}')">${post.author}</a> @ ${timetampToTime(post.timestamp)}</div><p> ${twemoji.parse(post.content,{folder: 'svg',ext: '.svg'})} </p> </div>`
             }
             document.getElementById("main").innerHTML = contents
         })
@@ -145,14 +145,14 @@ function loadPost(postNum){
         fetch('/api/post/'+postNum.toString()).then(res => res.json()).then(res => {
             
                 const post = res[0];
-                contents += `<div class="post comments"><div class="posth">${post.title} by ${post.author} @ ${timetampToTime(post.timestamp)}</div><p> ${post.content} </p> </div>`
+                contents += `<div class="post comments"><div class="posth">${post.title} by ${post.author} @ ${timetampToTime(post.timestamp)}</div><p> ${twemoji.parse(post.content,{folder: 'svg',ext: '.svg'})} </p> </div>`
                 contents += `<div class="post"> <textarea placeholder="Comment" id="comment"></textarea> <button onclick="postComment1(${postNum})">Send</button> </div> `
                 document.getElementById("main").innerHTML = contents
                 fetch('/api/comments/'+postNum).then(res => res.json()).then(res1 => {
                     contents += '<div class="centered">'+res1.length + ' Comments</div>'
                     for (let i = 0; i < res1.length; i++) {
                         const post1 = res1[i];
-                        contents += `<div class="post"><div class="posth">Commented by ${post1.author} @ ${timetampToTime(post1.timestamp)}</div><p> ${post1.content} </p> </div>`
+                        contents += `<div class="post"><div class="posth">Commented by ${post1.author} @ ${timetampToTime(post1.timestamp)}</div><p> ${twemoji.parse(post1.content,{folder: 'svg',ext: '.svg'})} </p> </div>`
                     }
                     document.getElementById("main").innerHTML = contents
                 })
