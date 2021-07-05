@@ -34,7 +34,7 @@ Comment1.post('/comment', function (req: any, res: any) {
                                                 r.table('comments').insert({ id: result1.length + 1, post_id: req.body.post, content: req.body.content, author: result[0].account, timestamp: Date.now() }).run(conn,(err,res1)=>
                                                 {
                                                     if(err) res.send({ message: "An error has occured" });
-                                                    console.log(res1)
+                                                    res.send({ message: "Comment posted successfully" });
                                                 }
                                                 )
                                                 

@@ -18,29 +18,34 @@ r.connect(rethinkDbConnectionObject, (err, conn) => {
         console.log('DB `cackle` was created successfully.');
     })
 
+    r.db('cackle').tableCreate('logins').run(conn, function (err, result) {
+        if (err) throw err;
+        console.log('Table `logins` was created successfully.');
+    })
+
     //Create post table
-    r.db('cackle').tableCreate('posts').run(connection, function (err, result) {
+    r.db('cackle').tableCreate('posts').run(conn, function (err, result) {
         if (err) throw err;
         console.log('Table `posts` was created successfully.');
     })
 
     //Create test post
-    r.table('posts').insert({ title: "hello", content: "test content", author: "test", timestamp: 1234567 }).run(conn, function (err, result) {
+    r.db('cackle').table('posts').insert({ title: "hello", content: "test content", author: "test", timestamp: 1234567 }).run(conn, function (err, result) {
         if (err) throw err;
         console.log('Test post created successfully.');
     })
 
-    r.db('cackle').tableCreate('comments').run(connection, function (err, result) {
+    r.db('cackle').tableCreate('comments').run(conn, function (err, result) {
         if (err) throw err;
         console.log('Table `comments` was created successfully.');
     })
 
-    r.db('cackle').tableCreate('follows').run(connection, function (err, result) {
+    r.db('cackle').tableCreate('follows').run(conn, function (err, result) {
         if (err) throw err;
         console.log('Table `follows` was created successfully.');
     })
 
-    r.db('cackle').tableCreate('users').run(connection, function (err, result) {
+    r.db('cackle').tableCreate('users').run(conn, function (err, result) {
         if (err) throw err;
         console.log('Table `users` was created successfully.');
     })
@@ -49,11 +54,5 @@ r.connect(rethinkDbConnectionObject, (err, conn) => {
         if (err) throw err;
         console.log('Test user with password `test123` and username of `test` created successfully');
     });
-
-
-    r.db('cackle').tableCreate('logins').run(connection, function (err, result) {
-        if (err) throw err;
-        console.log('Table `logins` was created successfully.');
-    })
 
 });

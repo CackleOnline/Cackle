@@ -4,6 +4,13 @@
 //    });
 //}
 
+function thingy(message) {
+    var x = document.getElementById("snackbar");
+    x.innerHTML = message;
+    x.className = "show";
+    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+}
+
 console.stdlog = console.log.bind(console);
 console.logs = [];
 console.log = function(){
@@ -27,7 +34,15 @@ function timetampToTime(timestamp){
     var yeet2 = new Date(timestamp)
     let isPM = 0
     if(yeet1.getDate() === yeet2.getDate() && yeet1.getMonth() === yeet2.getMonth() && yeet1.getFullYear() === yeet2.getFullYear()){
-        if(yeet2.getHours() > 12){
+        
+        if(yeet2.getHours() === 0){
+            isPM = 1
+            if(yeet2.getMinutes() < 10){
+                return "Today at " + (12) + ":0" + yeet2.getMinutes() + " PM"
+            }else{
+                return "Today at " + (12) + ":" + yeet2.getMinutes() + " PM"
+            }
+        }else if(yeet2.getHours() > 12){
             isPM = 1
             if(yeet2.getMinutes() < 10){
                 return "Today at " + (yeet2.getHours() - 12) + ":0" + yeet2.getMinutes() + " PM"
@@ -149,6 +164,7 @@ function loadPost(postNum){
                 contents += `<div class="post"> <textarea placeholder="Comment" id="comment"></textarea> <button onclick="postComment1(${postNum})">Send</button> </div> `
                 document.getElementById("main").innerHTML = contents
                 fetch('/api/comments/'+postNum).then(res => res.json()).then(res1 => {
+                    res1 = res1.reverse()
                     contents += '<div class="centered">'+res1.length + ' Comments</div>'
                     for (let i = 0; i < res1.length; i++) {
                         const post1 = res1[i];
@@ -177,7 +193,14 @@ function login() {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
-    }).then(res => res.json()).then(res => { setCookie('token', res.token, 7); window.location = '/' })
+    }).then(res => res.json()).then(res => { setCookie('token', res.token, 7); window.location = '/';
+    if(res1.message) {
+        thingy(res.message)
+    }
+    if(res1.error) {
+        thingy(res.error)
+    }
+})
 }
 
 function register() {
@@ -188,7 +211,14 @@ function register() {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
-    }).then(res => res.json()).then(res => { console.log(res)})
+    }).then(res => res.json()).then(res => {
+        if(res.message) {
+            thingy(res.message)
+        }
+        if(res.error) {
+            thingy(res.error)
+        }
+    })
 }
 
 function getUserInfo() {
@@ -209,7 +239,14 @@ function postMessage1() {
             'Authentication': getCookie('token')
         },
         body: JSON.stringify(data)
-    }).then(res => res.json()).then(res => { contents = ""; console.log(res); loadPosts() })
+    }).then(res => res.json()).then(res => { contents = ""; console.log(res); loadPosts(); 
+        if(res.message) {
+            thingy(res.message)
+        }
+        if(res.error) {
+            thingy(res.error)
+        }
+    })
 }
 
 function postComment1(post) {
@@ -221,7 +258,14 @@ function postComment1(post) {
             'Authentication': getCookie('token')
         },
         body: JSON.stringify(data)
-    }).then(res => res.json()).then(res => { contents = ""; console.log(res); loadPost(post) })
+    }).then(res => res.json()).then(res => { contents = ""; console.log(res); loadPost(post);
+    if(res.message) {
+        thingy(res.message)
+    }
+    if(res.error) {
+        thingy(res.error)
+    }
+})
 }
 
 if(document.getElementById('submitPost') !== null){
@@ -310,7 +354,12 @@ function followUser(user){
             'Authentication': getCookie('token')
         }
     }).then(res => res.json()).then(res1 => {
-        console.log(res)
+        if(res1.message) {
+            thingy(res.message)
+        }
+        if(res1.error) {
+            thingy(res.error)
+        }
     })
 }
 
