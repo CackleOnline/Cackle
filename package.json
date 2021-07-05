@@ -5,9 +5,9 @@
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
-    "dev": "tsc && node dist",
+    "dev": "npx tsc && node dist",
     "dbsetup": "node dbSetup",
-    "build": "tsc",
+    "build": "npx tsc",
     "start": "node dist"
   },
   "keywords": [],
