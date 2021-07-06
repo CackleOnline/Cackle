@@ -1,4 +1,6 @@
 //imports
+import Crab from './Crab/Crab'
+import crash from './Crab/CrabCrashHelper'
 import app from 'express'
 import cookieParser from 'cookie-parser'
 import Home from './Routes/Home'
@@ -16,6 +18,10 @@ import SW from './Routes/ServiceWorker'
 import Comment1 from './Api/Comment'
 import Comments from './Api/Comments'
 import Follows from './Api/Follows'
+
+//V Crab V
+new Crab()
+crash()
 
 //express stuff
 var App = app()
