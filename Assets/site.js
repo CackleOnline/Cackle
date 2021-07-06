@@ -4,6 +4,7 @@
 //    });
 //}
 
+
 function thingy(message) {
     var x = document.getElementById("snackbar");
     x.innerHTML = message;
@@ -148,12 +149,12 @@ function loadPosts() {
             res.reverse()
             for (let i = 0; i < res.length; i++) {
                 const post = res[i];
-                contents += `<div class="post"><div class="posth"><a href="#" onclick="loadPost(${post.id})">${twemoji.parse(post.title, { folder: 'svg', ext: '.svg' })}</a> by <a href="#" onclick="loadPostsByUser('${post.author}')">${post.author}</a> @ ${timetampToTime(post.timestamp)}</div><p> ${twemoji.parse(post.content, { folder: 'svg', ext: '.svg' })} </p> </div>`
+                contents += `<div class="post"><div class="posth"><a href="#" onclick="loadPost(${post.id})">${twemoji.parse(DOMPurify.sanitize( post.title , {USE_PROFILES: {html: true}} ), { folder: 'svg', ext: '.svg' })}</a> by <a href="#" onclick="loadPostsByUser('${post.author}')">${post.author}</a> @ ${timetampToTime(post.timestamp)}</div><p> ${twemoji.parse(DOMPurify.sanitize(post.content), { folder: 'svg', ext: '.svg' })} </p> </div>`
             }
             document.getElementById("main").innerHTML = contents
         })
     } else {
-        document.getElementById("main").innerHTML = `<div class="post error"> <img src="/assets/danger.svg" alt="alert"/> <br/> It appears that you are offline, try again later of refresh the page </div>`
+        document.getElementById("main").innerHTML = `<div class="post error"> <img src="/assets/danger.svg" alt="alert"/> <br/> It appears that you are offline, try again later or refresh the page </div>`
     }
 }
 
@@ -164,7 +165,7 @@ function loadPost(postNum) {
         fetch('/api/post/' + postNum.toString()).then(res => res.json()).then(res => {
 
             const post = res[0];
-            contents += `<div class="post comments"><div class="posth"> ${twemoji.parse(post.title, { folder: 'svg', ext: '.svg' })} by ${post.author} @ ${timetampToTime(post.timestamp)}</div><p> ${twemoji.parse(post.content, { folder: 'svg', ext: '.svg' })} </p> </div>`
+            contents += `<div class="post comments"><div class="posth"> ${twemoji.parse(DOMPurify.sanitize( post.title , {USE_PROFILES: {html: true}} ), { folder: 'svg', ext: '.svg' })} by ${DOMPurify.sanitize( post.author , {USE_PROFILES: {html: true}} )} @ ${timetampToTime(post.timestamp)}</div><p> ${twemoji.parse(DOMPurify.sanitize(post.content), { folder: 'svg', ext: '.svg' })} </p> </div>`
             contents += `<div class="post"> <textarea placeholder="Comment" id="comment"></textarea> <button onclick="postComment1(${postNum})">Send</button> </div> `
             document.getElementById("main").innerHTML = contents
             fetch('/api/comments/' + postNum).then(res => res.json()).then(res1 => {
@@ -172,7 +173,7 @@ function loadPost(postNum) {
                 contents += '<div class="centered">' + res1.length + ' Comments</div>'
                 for (let i = 0; i < res1.length; i++) {
                     const post1 = res1[i];
-                    contents += `<div class="post"><div class="posth">Commented by ${post1.author} @ ${timetampToTime(post1.timestamp)}</div><p> ${twemoji.parse(post1.content, { folder: 'svg', ext: '.svg' })} </p> </div>`
+                    contents += `<div class="post"><div class="posth">Commented by ${post1.author} @ ${timetampToTime(post1.timestamp)}</div><p> ${twemoji.parse(DOMPurify.sanitize(post.content), { folder: 'svg', ext: '.svg' })} </p> </div>`
                 }
                 document.getElementById("main").innerHTML = contents
             })
@@ -325,7 +326,7 @@ function navigate(page) {
                     contents = `<h2 class="centered">Posts by ${res1.account}</h2>`
                     for (let i = 0; i < res.length; i++) {
                         const post = res[i];
-                        contents += `<div class="post"><div class="posth">${post.title} by ${post.author} @ ${timetampToTime(post.timestamp)}</div><p> ${post.content} </p> </div>`
+                        contents += `<div class="post"><div class="posth">${twemoji.parse(DOMPurify.sanitize( post.title , {USE_PROFILES: {html: true}} ), { folder: 'svg', ext: '.svg' })} by ${post.author} @ ${timetampToTime(post.timestamp)}</div><p> ${twemoji.parse(DOMPurify.sanitize(post.content), { folder: 'svg', ext: '.svg' })} </p> </div>`
                     }
                     document.getElementById("main").innerHTML = contents
                 })
@@ -367,7 +368,7 @@ function loadPostsByUser(user) {
                 contents = `<h2 class="centered">Posts by ${user} <button id="submitFollow followbtn" value="${user}" >Follow ${user}</button></h2>`
                 for (let i = 0; i < res.length; i++) {
                     const post = res[i];
-                    contents += `<div class="post"><div class="posth">${post.title} by ${post.author} @ ${timetampToTime(post.timestamp)}</div><p> ${post.content} </p> </div>`
+                    contents += `<div class="post"><div class="posth">${twemoji.parse(DOMPurify.sanitize( post.title , {USE_PROFILES: {html: true}} ), { folder: 'svg', ext: '.svg' })} by ${post.author} @ ${timetampToTime(post.timestamp)}</div><p> ${twemoji.parse(DOMPurify.sanitize(post.content), { folder: 'svg', ext: '.svg' })} </p> </div>`
                 }
                 document.getElementById("main").innerHTML = contents
                 document.getElementById('submitFollow followbtn').addEventListener('click', () => { followUser(document.getElementById('submitFollow followbtn').value) })

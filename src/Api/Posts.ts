@@ -38,6 +38,7 @@ Posts.get('/post/:id', function (req: any, res: any) {
 
         r.table('posts').filter(r.row('id').eq(parseInt(req.params.id))).
             run(conn, function (err, cursor) {
+                try{
                 if (err) console.log(err);
                 cursor.toArray(function (err, result) {
                     if (err) console.log(err);
@@ -46,7 +47,10 @@ Posts.get('/post/:id', function (req: any, res: any) {
                     res.set('Cache-Control', 'no-store')
                     console.log(results)
                     res.send(result)
-                });
+                });}catch(e){
+                    console.log(e)
+                    res.send({error:"there was an error"})
+                }
             });
     });
 }catch(e){
@@ -109,6 +113,7 @@ Posts.get('/feed', function (req: any, res: any) {
 
                                             r.table('follows').filter(r.row('userFollowing').eq(result[0].account)).
                                             run(conn, function (err, cursor2) {
+                                                try{
                                                 if (err) throw err;
                                                 cursor2.toArray(function (err, resultI) {
                                                     if (err) throw err;
@@ -121,7 +126,9 @@ Posts.get('/feed', function (req: any, res: any) {
                                                         }
                                                     }
                                                     res.send(feed)
-                                                });
+                                                });}catch(e){
+
+                                                }
                                             });
                                     })
                                     } catch (e) {
