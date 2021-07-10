@@ -16,7 +16,7 @@ r.connect(rethinkDbConnectionObject, (err, conn) => {
     r.dbCreate('cackle').run(conn, function (err, result) {
         if (err) throw err;
         console.log('DB `cackle` was created successfully.');
-    })
+    
 
     r.db('cackle').tableCreate('logins').run(conn, function (err, result) {
         if (err) throw err;
@@ -27,12 +27,7 @@ r.connect(rethinkDbConnectionObject, (err, conn) => {
     r.db('cackle').tableCreate('posts').run(conn, function (err, result) {
         if (err) throw err;
         console.log('Table `posts` was created successfully.');
-    })
-
-    //Create test post
-    r.db('cackle').table('posts').insert({ title: "hello", content: "test content", author: "test", timestamp: 1234567 }).run(conn, function (err, result) {
-        if (err) throw err;
-        console.log('Test post created successfully.');
+        //Create test post
     })
 
     r.db('cackle').tableCreate('comments').run(conn, function (err, result) {
@@ -48,11 +43,11 @@ r.connect(rethinkDbConnectionObject, (err, conn) => {
     r.db('cackle').tableCreate('users').run(conn, function (err, result) {
         if (err) throw err;
         console.log('Table `users` was created successfully.');
+        r.db('cackle').table('users').insert({ username: "test", email:"test@example.com", password: "$2b$12$ZlYBlPfgyqTxiUtJcb0SFu9TQ5x9jlONocsuLDrogWoomSr7Az7.q" }).run(conn, function (err, result) {
+            if (err) throw err;
+            console.log('Test user with password `test123` and username of `test` created successfully');
+        });
     })
-
-    r.table('users').insert({ username: "test", email:"test@example.com", password: "$2b$12$ZlYBlPfgyqTxiUtJcb0SFu9TQ5x9jlONocsuLDrogWoomSr7Az7.q" }).run(conn, function (err, result) {
-        if (err) throw err;
-        console.log('Test user with password `test123` and username of `test` created successfully');
-    });
+})
 
 });
