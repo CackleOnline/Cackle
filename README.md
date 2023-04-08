@@ -1,1 +1,1 @@
-# Cackle: A microblogging/social media designed for the future
+# Cackle: A microblogging/social media designed for the future.
