@@ -6,8 +6,10 @@
     "bun-types": "^0.5.0"
   },
   "dependencies": {
+    "bcrypt": "^5.1.0",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
+    "jsonwebtoken": "^9.0.0",
     "mysql2": "^3.2.0"
   }
 }

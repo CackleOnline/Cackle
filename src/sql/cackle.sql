@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Apr 11, 2023 at 09:37 PM
--- Server version: 10.4.27-MariaDB
--- PHP Version: 8.0.25
+-- Host: db
+-- Generation Time: Apr 26, 2023 at 01:18 AM
+-- Server version: 10.11.2-MariaDB-1:10.11.2+maria~ubu2204
+-- PHP Version: 8.1.17
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,15 +24,14 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `posts`
+-- Table structure for table `mail`
 --
 
-CREATE TABLE `posts` (
+CREATE TABLE `mail` (
   `ID` varchar(255) NOT NULL,
-  `authorID` varchar(255) NOT NULL,
-  `responseTo` varchar(255) DEFAULT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
-  `content` varchar(512) NOT NULL
+  `Author` varchar(255) NOT NULL,
+  `Reply` varchar(255) NOT NULL,
+  `Content` varchar(4092) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -53,12 +52,12 @@ CREATE TABLE `users` (
 --
 
 --
--- Indexes for table `posts`
+-- Indexes for table `mail`
 --
-ALTER TABLE `posts`
+ALTER TABLE `mail`
   ADD PRIMARY KEY (`ID`),
-  ADD KEY `username` (`authorID`),
-  ADD KEY `responseTo` (`responseTo`);
+  ADD KEY `Author` (`Author`),
+  ADD KEY `Reply` (`Reply`);
 
 --
 -- Indexes for table `users`
@@ -72,11 +71,11 @@ ALTER TABLE `users`
 --
 
 --
--- Constraints for table `posts`
+-- Constraints for table `mail`
 --
-ALTER TABLE `posts`
-  ADD CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`authorID`) REFERENCES `users` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `posts_ibfk_2` FOREIGN KEY (`ID`) REFERENCES `posts` (`responseTo`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `mail`
+  ADD CONSTRAINT `mail_ibfk_1` FOREIGN KEY (`Author`) REFERENCES `users` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `mail_ibfk_2` FOREIGN KEY (`ID`) REFERENCES `mail` (`Reply`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
