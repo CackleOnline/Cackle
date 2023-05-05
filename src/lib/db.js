@@ -1,10 +1,14 @@
-import mysql from 'mysql2/promise'
+import r from 'rethinkdb';
 
-const connection = await mysql.createConnection({
-    host: process.env.MYSQL_HOST,
-    user: process.env.MYSQL_USER,
-    password: process.env.MYSQL_PASS,
-    database: 'cackle'
-})
+const dbConfig = {
+  host: '172.17.0.2',
+  port: 28015,
+  db: 'cackle'
+};
 
-export default connection
+const connect = async () => {
+  const conn = await r.connect(dbConfig);
+  return conn;
+};
+
+export default connect;
