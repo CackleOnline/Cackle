@@ -1,8 +1,10 @@
 import r from 'rethinkdb';
+import dotenv from 'dotenv'
+dotenv.config()
 
 const dbConfig = {
-  host: '172.17.0.2',
-  port: 28015,
+  host: process.env.RETHINK_HOST,
+  port: process.env.RETHINK_PORT,
   db: 'cackle'
 };
 
