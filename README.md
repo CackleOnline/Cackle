@@ -1,1 +1,1 @@
-# Cackle: A microblogging/social media designed for the future.
+# Cackle: An open source and (not yet) end to end encrypted centralized digital mail alternative
