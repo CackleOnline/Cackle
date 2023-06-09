@@ -11,8 +11,8 @@ const app = express()
 if (process.env.NODE_ENV == "PROD") {
     app.use(rl({
         windowMs: 60 * 60 * 1000,
-        max: 100,
-        message: 'Too many requests, please try again later.'
+        max: 600,
+        message: {success:false, message:'Too many requests, please try again later.'}
     }))
 }
 
