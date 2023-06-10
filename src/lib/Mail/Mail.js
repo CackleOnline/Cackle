@@ -1,5 +1,5 @@
 
-import flake from '../utils/flake.js';
+import flake from '../Utils/flake.js';
 import h from 'jsonwebtoken';
 import r from 'rethinkdb';
 import connect from '../db.js';
