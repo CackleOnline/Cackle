@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import flake from '../utils/flake.js';
+import flake from '../Utils/flake.js';
 import validate from '../Utils/validation.js';
 import h from 'jsonwebtoken';
 import r from 'rethinkdb';
