@@ -22,4 +22,4 @@ app.use(bp.json())
 app.use('/Auth/', AuthRoute)
 app.use('/Mail/', MailRoute)
 
-app.listen(3141)
+app.listen(process.env.WEB_PORT)
